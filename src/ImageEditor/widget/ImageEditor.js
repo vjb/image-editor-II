@@ -15,15 +15,18 @@ define([
     "dojo/html",
     "dojo/_base/event",
     "ImageEditor/lib/fabric",
+    "ImageEditor/lib/canvas-to-blob",
+
+    
 
     "dojo/text!ImageEditor/widget/template/ImageEditor.html"
-], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, lang, dojoText, dojoHtml, dojoEvent, fabric, widgetTemplate) {
+], function (declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, lang, dojoText, dojoHtml, dojoEvent, fabric, canvasToBlob, widgetTemplate) {
     "use strict";
 
     return declare("ImageEditor.widget.ImageEditor", [_WidgetBase, _TemplatedMixin], {
 
         templateString: widgetTemplate,
-
+ 
         // nodes
         canvasNode: null,
         widgetBase: null,
@@ -291,7 +294,7 @@ define([
                 lockScalingY: true,
             });
 
-            
+
             var objs = [line,triangle];
 
             var alltogetherObj = new fabric.Group(objs, {
