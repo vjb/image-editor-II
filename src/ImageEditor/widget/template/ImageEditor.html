@@ -1,0 +1,48 @@
+<div class="iamge-editor" data-dojo-attach-point="widgetBase">
+    <div class="image-editor__canvas">
+        <canvas data-dojo-attach-point="canvasNode"></canvas>
+    </div>
+    <div class="image-editor__controls">
+        <button class="btn mx-button  btn-default" data-dojo-attach-point="addArrowButtonNode">&rarr; </button>
+        <button class="mx-btn btn-default" data-dojo-attach-point="addTextButtonNode">A▏</button>
+        <button class="mx-btn btn-default" data-dojo-attach-point="saveButtonNode">💾 </button>
+        <button class="mx-btn btn-default" data-dojo-attach-point="deleteButtonNode"></button>Del</button>
+        <button class="mx-btn btn-default" data-dojo-attach-point="increaseFontButtonNode">^</button>
+        <button class="mx-btn btn-default" data-dojo-attach-point="makeBlueButtonNode">Blue</button>
+
+
+        <div id="text-wrapper" style="margin-top: 10px" ng-show="getText()">
+
+            <div id="text-controls">
+                <input type="color" value="" data-dojo-attach-point="textColorNode" size="10">
+                <label for="font-family" style="display:inline-block">Font family:</label>
+                <select data-dojo-attach-point="fontFamilyNode">
+                    <option value="arial">Arial</option>
+                    <option value="helvetica" selected>Helvetica</option>
+                    <option value="myriad pro">Myriad Pro</option>
+                    <option value="delicious">Delicious</option>
+                    <option value="verdana">Verdana</option>
+                    <option value="georgia">Georgia</option>
+                    <option value="courier">Courier</option>
+                    <option value="comic sans ms">Comic Sans MS</option>
+                    <option value="impact">Impact</option>
+                    <option value="monaco">Monaco</option>
+                    <option value="optima">Optima</option>
+                    <option value="hoefler text">Hoefler Text</option>
+                    <option value="plaster">Plaster</option>
+                    <option value="engagement">Engagement</option>
+                </select>
+                <br>
+
+                <div>
+                    <label for="textFontSizeNode">Font size:</label>
+                    <input type="range" value="" min="1" max="120" step="1" data-dojo-attach-point="textFontSizeNode">
+                </div>
+
+            </div>
+        </div>
+       
+    </div>
+
+</div>
+

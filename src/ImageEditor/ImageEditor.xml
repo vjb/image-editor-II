@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="ImageEditor.widget.ImageEditor" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>ImageEditor</name>
+    <description>The description of this widget.</description>
+
+    <icon />
+
+    <properties>
+        <property key="pathToParent" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="false">
+          <caption>Path to Parent</caption>
+          <category>General</category>
+          <description>Select the parent entity, over the association whose value will be copied into the new image. </description>
+        </property>
+        <property key="onUploadComplete" type="microflow" required="false">
+          <caption>On Complete</caption>
+          <category>General</category>
+          <description>The microflow to be called when the upload finishes. Will receive the new object (of the same entity as the current context) as a parameter</description>
+          <returnType type="Void" />
+        </property>
+        <property key="imAttribute" type="attribute" required="true">
+          <caption>Attribute</caption>
+          <category>Appearance</category>
+          <description>The enumeration to use to set the default CMB image on the overlay</description>
+          <attributeTypes>
+            <attributeType name="Enum" />
+          </attributeTypes>
+        </property>
+        <property key="imageMapping" type="object" isList="true" required="true">
+          <caption>Images</caption>
+          <category>Appearance</category>
+          <description>What images should be displayed based on the enumeration values?</description>
+          <properties>
+            <property key="imKey" type="string" required="true">
+              <caption>Key</caption>
+              <category>General</category>
+              <description>The enumeration value. (Must match exactly)</description>
+            </property>
+            <property key="imImage" type="image" required="false">
+             <caption>Image</caption>
+              <category>General</category>
+              <description>The image to display for this enumeration value</description>
+            </property>
+          </properties>
+        </property>
+    </properties>
+</widget>
