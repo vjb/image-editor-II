@@ -226,6 +226,23 @@ define([
                 this.renderAll();
             });
 
+            this.canvas.on('object:selected', function () {
+               
+                var activeObject = this.getActiveObject();
+               
+                if (activeObject.type === 'i-text'){
+                    
+                    document.getElementById("text-controller").style.visibility = 'visible';
+                    }
+                else{
+                    document.getElementsByClassName("tex");
+                    document.getElementById("text-controller").style.visibility = 'hidden';
+                }
+                
+                
+
+            });
+
 
         },
 
