@@ -65,7 +65,7 @@ define([
             // fabric.Image.fromURL('/img/MyFirstModule$_16_base_back.png', function (oImg) {
             //     this.canvas.add(oImg);
             // }.bind(this));
-            
+
             this._setupEvents();
         },
 
@@ -173,7 +173,7 @@ define([
             this.connect(this.addArrowButtonNode, "click", this._drawArrow);
             this.connect(this.saveButtonNode, "click", this._saveToNewImage);
             this.connect(this.deleteButtonNode, "click", this._deleteObject);
-            
+
             this.connect(this.textFontSizeNode, "change", this._changeFontSize);
             this.connect(this.textColorNode, "change", this._changeColor);
             this.connect(this.fontFamilyNode, "change", this._changeFontFamily);
@@ -189,11 +189,11 @@ define([
             // set up text based events
 
             this.connect(this.increaseFont, "click", this._increaseFont);
-            this.connect(this.decreaseFont,"click",this._decreaseFont);
+            this.connect(this.decreaseFont, "click", this._decreaseFont);
 
-            
+
             // setup canvas events
-        
+
             this.canvas.on('object:rotating', function () {
                 var obj = this.getActiveObject();
                 obj.set({
@@ -207,6 +207,23 @@ define([
                 obj.set({
                     opacity: 0.5
                 });
+
+/*
+                Arrows could be fancier but lets leave it at that for now 
+                TODO:  make arrows that handle edge cases better
+                
+                if (obj.isArrow) {
+
+                    var triangle = obj.item(1),
+                    group = obj;
+                    scaleX = triangle.width / group.getWidth();
+                    scaleY = circle.height / group.getHeight();
+                    triangle.setScaleX(scaleX);
+                    triangle.setScaleY(scaleY);
+
+                   
+                }
+*/
                 this.renderAll();
 
 
@@ -229,39 +246,38 @@ define([
             });
 
             this.canvas.on('object:selected', function () {
-               
+
                 var activeObject = this.getActiveObject();
-               
-                if (activeObject.isCMB)
-                {
+
+                if (activeObject.isCMB) {
                     document.getElementById("text-controller").style.visibility = 'hidden';
                     document.getElementById("color-controller").style.visibility = 'hidden';
-                }
-                else if (activeObject.type === 'i-text'){
+                } else if (activeObject.type === 'i-text') {
                     document.getElementById("text-controller").style.visibility = 'visible';
                     document.getElementById("color-controller").style.visibility = 'visible';
-                    }
-                else if (activeObject.isArrow)
-                {
+
+                    // TODO:  why doesn't this work?
+                    // document.getElementById("text-selector").value = activeObject.fontFamilyNode;
+
+                } else if (activeObject.isArrow) {
                     document.getElementById("text-controller").style.visibility = 'hidden';
                     document.getElementById("color-controller").style.visibility = 'visible';
-                }
-                else {
+                } else {
                     document.getElementById("color-controller").style.visibility = 'hidden';
                     document.getElementById("text-controller").style.visibility = 'hidden';
                 }
-                
+
 
             });
 
             this.canvas.on('selection:cleared', function () {
-               
-                            
+
+
                 document.getElementById("color-controller").style.visibility = 'hidden';
                 document.getElementById("text-controller").style.visibility = 'hidden';
-                
-                
-                
+
+
+
 
             });
 
@@ -269,58 +285,58 @@ define([
 
         _increaseFont: function () {
             var activeObject = this.canvas.getActiveObject()
-            if (activeObject.type === 'i-text'){
+            if (activeObject.type === 'i-text') {
                 var currentFont = activeObject.fontSize;
-                if (currentFont + 2 < 120){
-                    activeObject.setFontSize(currentFont+2);
-                }
-                else {
+                if (currentFont + 2 < 120) {
+                    activeObject.setFontSize(currentFont + 2);
+                } else {
                     activeObject.setFontSize(120);
                 }
             }
-              
+
             this.canvas.renderAll();
-           
-            }
-        ,
+
+        },
         _decreaseFont: function () {
             var activeObject = this.canvas.getActiveObject()
-            if (activeObject.type === 'i-text'){
+            if (activeObject.type === 'i-text') {
                 var currentFont = activeObject.fontSize;
-                if (currentFont - 2 > 5){
-                    activeObject.setFontSize(currentFont-2);
-                }
-                else {
+                if (currentFont - 2 > 5) {
+                    activeObject.setFontSize(currentFont - 2);
+                } else {
                     activeObject.setFontSize(5);
                 }
             }
-              
+
             this.canvas.renderAll();
-           
-            }
-        ,
+
+        },
 
         _makeSpecColor: function (event) {
             var activeObject = this.canvas.getActiveObject()
-            var colorOptions = {'red':'#ca261a','blue':'#0467c6','black':'#333333','green':'#098a00','yellow':'#ffbf05'};
+            var colorOptions = {
+                'red': '#ca261a',
+                'blue': '#0467c6',
+                'black': '#333333',
+                'green': '#098a00',
+                'yellow': '#ffbf05'
+            };
             var hexColor = colorOptions[event.srcElement.value];
-            if (activeObject.type === 'i-text'){
+            if (activeObject.type === 'i-text') {
                 //text box
-                activeObject.set("fill",hexColor);
-                activeObject.set("stroke",hexColor);
-            }
-            else{
+                activeObject.set("fill", hexColor);
+                activeObject.set("stroke", hexColor);
+            } else {
                 //arrow which is two pieces (TODO: necessary to have both?)
-                for(var item in activeObject._objects){
+                for (var item in activeObject._objects) {
                     item = activeObject._objects[item];
-                    item.set("fill",hexColor);
-                    item.set("stroke",hexColor);
+                    item.set("fill", hexColor);
+                    item.set("stroke", hexColor);
                 }
             }
             this.canvas.renderAll();
-                    
-            }
-        ,
+
+        },
 
         _changeFontFamily: function () {
 
@@ -358,11 +374,13 @@ define([
         _deleteObject: function () {
             var activeObject = this.canvas.getActiveObject()
 
-
-            if (confirm('Are you sure?')) {
-                this.canvas.remove(activeObject);
+            if (activeObject.isCMB) {
+                alert("You cannot delete the CMB")
+            } else {
+                if (confirm('Are you sure?')) {
+                    this.canvas.remove(activeObject);
+                }
             }
-
         },
 
         _drawInteractiveText: function () {
@@ -395,16 +413,16 @@ define([
         },
 
         _drawArrow: function () {
-        
+
             var triangle = new fabric.Triangle({
-                width: 10,
-                height: 15,
+                width: 40,
+                height: 20,
                 left: 235,
-                top: 85,
+                top: 80,
                 angle: 90,
                 stroke: 'yellow',
                 fill: 'yellow',
-                strokeWidth: 20,
+                strokeWidth: 1,
                 lockScalingY: true,
                 //lockScalingX:true
             });
@@ -431,7 +449,7 @@ define([
                 cornerColor: '#fd5f00',
                 cornerSize: 20,
                 rotatingPointOffset: 80,
-                isArrow : true,
+                isArrow: true,
                 // lockScalingX: true,
                 // lockScalingY: true
             });
@@ -449,7 +467,7 @@ define([
 
 
             this.canvas.add(alltogetherObj);
-        
+
         },
         /**
          * SAVE TO NEW IMAGE
@@ -564,7 +582,7 @@ define([
                     cornerSize: 20,
                     rotatingPointOffset: 80,
                     deletable: false,
-                    isCMB:true
+                    isCMB: true
                 });
                 this.canvas.add(oImg);
             }.bind(this));
