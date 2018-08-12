@@ -9,13 +9,21 @@
             <span class="wdgt-text">Add Annotation</span>
             <button class="mx-btn btn-default wdgt-btn" data-dojo-attach-point="addTextButtonNode">Add Text</button>
             <button class="mx-btn btn-default wdgt-btn" data-dojo-attach-point="addArrowButtonNode">Add Line</button>
+            <button class="mx-btn btn-default wdgt-btn" data-dojo-attach-point="deleteButtonNode">Delete</button>
+        </div>
+
+        <div id="color-controller" class="btn-grp">
+            <span class="wdgt-text">Colour</span>
+            <button class="red wdgt-clr-div" value='red' data-dojo-attach-point="makeRedButtonNode"></button>
+            <button class="blue wdgt-clr-div" value='blue' data-dojo-attach-point="makeBlue"></button>
+            <button class="black wdgt-clr-div" value='black' data-dojo-attach-point="makeBlackButtonNode"></button>
+            <button class="green wdgt-clr-div" value='green' data-dojo-attach-point="makeGreenButtonNode"></button>
+            <button class="yellow wdgt-clr-div" value='yellow' data-dojo-attach-point="makeYellowButtonNode"></button>
         </div>
 
 
-        <div id="text-controller" class="btn-grp" >
-            
+        <div id="text-controller" class="btn-grp">
             <span class="wdgt-text">Font</span>
-
             <select data-dojo-attach-point="fontFamilyNode">
                 <option value="arial">Arial</option>
                 <option value="helvetica" selected>Helvetica</option>
@@ -35,14 +43,9 @@
             <span class="wdgt-text">Font Size</span>
             <button class="img-dec-cls" data-dojo-attach-point="decreaseFont"></button>>
             <button class="img-inc-cls" data-dojo-attach-point="increaseFont"></button>>
-            <span class="wdgt-text">Colour</span>
-            <button class="red wdgt-clr-div" value='red' data-dojo-attach-point="makeRedButtonNode"></button>
-            <button class="blue wdgt-clr-div" value='blue' data-dojo-attach-point="makeBlue"></button>
-            <button class="black wdgt-clr-div" value='black' data-dojo-attach-point="makeBlackButtonNode"></button>
-            <button class="green wdgt-clr-div" value='green' data-dojo-attach-point="makeGreenButtonNode"></button>
-            <button class="yellow wdgt-clr-div" value='yellow' data-dojo-attach-point="makeYellowButtonNode"></button>
-            <button class="mx-btn btn-default wdgt-btn" data-dojo-attach-point="deleteButtonNode">Delete</button>
         </div>
+
+
     </div>
     <div class="ctrl-btn-grp">
         <div class="ctrl-btn-grp-div">

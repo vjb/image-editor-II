@@ -35,7 +35,7 @@ define([
         saveButtonNode: null,
         deleteButtonNode: null,
         increaseFontButtonNode: null,
-        makeBlueButtonNode: null,
+        makeBlueButton7Node: null,
         textFontSizeNode: null,
         fontFamilyNode: null,
 
@@ -208,6 +208,8 @@ define([
                     opacity: 0.5
                 });
                 this.renderAll();
+
+
             });
 
             this.canvas.on('object:moving', function () {
@@ -230,19 +232,38 @@ define([
                
                 var activeObject = this.getActiveObject();
                
-                if (activeObject.type === 'i-text'){
-                    
+                if (activeObject.isCMB)
+                {
+                    document.getElementById("text-controller").style.visibility = 'hidden';
+                    document.getElementById("color-controller").style.visibility = 'hidden';
+                }
+                else if (activeObject.type === 'i-text'){
                     document.getElementById("text-controller").style.visibility = 'visible';
+                    document.getElementById("color-controller").style.visibility = 'visible';
                     }
-                else{
-                    document.getElementsByClassName("tex");
+                else if (activeObject.isArrow)
+                {
+                    document.getElementById("text-controller").style.visibility = 'hidden';
+                    document.getElementById("color-controller").style.visibility = 'visible';
+                }
+                else {
+                    document.getElementById("color-controller").style.visibility = 'hidden';
                     document.getElementById("text-controller").style.visibility = 'hidden';
                 }
-                
                 
 
             });
 
+            this.canvas.on('selection:cleared', function () {
+               
+                            
+                document.getElementById("color-controller").style.visibility = 'hidden';
+                document.getElementById("text-controller").style.visibility = 'hidden';
+                
+                
+                
+
+            });
 
         },
 
@@ -409,7 +430,8 @@ define([
                 borderColor: '#fd5f00',
                 cornerColor: '#fd5f00',
                 cornerSize: 20,
-                rotatingPointOffset: 80
+                rotatingPointOffset: 80,
+                isArrow : true,
                 // lockScalingX: true,
                 // lockScalingY: true
             });
@@ -424,6 +446,8 @@ define([
                 mtr: true,
                 tl: false
             });
+
+
             this.canvas.add(alltogetherObj);
         
         },
@@ -539,7 +563,8 @@ define([
                     cornerColor: '#fd5f00',
                     cornerSize: 20,
                     rotatingPointOffset: 80,
-                    deletable: false
+                    deletable: false,
+                    isCMB:true
                 });
                 this.canvas.add(oImg);
             }.bind(this));
