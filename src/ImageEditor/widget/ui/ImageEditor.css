@@ -1,4 +1,97 @@
-.widgetname {
-
+.image-editor__canvas {
+    display: inline-block;
+  }
+  
+  .image-editor__controls {
+    display: inline-block;
+    position: fixed;
+    right: 5px;
+    height: 100%;
+  }
+  
+  .wdgt-btn {
+    color: #0467C6;
+    border-color: #0467C6;
+    background-color: #fff;
+    display: block;
+    height: 40px;
+    width: 160px;
+    margin-top:10px;
+  }
+  
+  .wdgt-text {
+    font-size: 18px;
+    display: block;
+  }
+  
+  .btn-grp {
+    border: 1px solid black;
+    padding: 10px 20px 10px 20px;
+  }
+  
+  .wdgt-clr-div {
+    display: inline-block;
+    width: 38px;
+    height: 36px;
+  }
+  
+  .red {
+    background: rgba(202, 38, 26, 1);
+  }
+  
+  .blue {
+    background: rgba(4, 103, 198, 1);
+  }
+  
+  .black {
+    background: rgba(51, 51, 51, 1);
+  }
+  
+  .green {
+    background: rgba(9, 138, 0, 1);
+    ;
+  }
+  
+  .yellow {
+    background: rgba(255, 191, 5, 1);
+  }
+  .img-dec-cls{
+    background:url('ImageEditor/widget/ui/smaller.png');
+    height:50px;
+    width:50px;
+    display:inline-block;
+  }
+  .img-inc-cls{
+    background:url('ImageEditor/widget/ui/bigger.png');
+    height:50px;
+    width:50px;
+    display:inline-block;
+  }
+  .ctrl-btn-grp{
+    display:block;
 }
-
+.ctrl-btn-grp-div{
+    display:inline-flext;
+    position:absolute;
+    right:0px;
+}
+  .wdgt-ctrl-btn-save {
+    color: #FFF !important;
+    border-color: #0467C6;
+    background-color: #0467C6 !important;
+    display: inline-block;
+    height: 40px;
+    width: 160px;
+    margin-top:10px;
+    margin-right:10px;
+  }
+  .wdgt-ctrl-btn {
+    color: #0467C6;
+    border-color: #0467C6;
+    background-color: #FFF;
+    display: inline-block;
+    height: 40px;
+    width: 160px;
+    margin-top:10px;
+    margin-right:5px;
+  }

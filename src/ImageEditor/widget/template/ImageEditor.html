@@ -1,41 +1,53 @@
+<div class="image-editor" data-dojo-attach-point="widgetBase">
+    <div class="image-editor__canvas">
+        <canvas data-dojo-attach-point="canvasNode"></canvas>
+    </div>
 
-<div class="iamge-editor" data-dojo-attach-point="widgetBase">
-   <div class="image-editor__canvas">
-      <canvas data-dojo-attach-point="canvasNode"></canvas>
-   </div>
-   <div class="image-editor__controls">
-      <button class="btn mx-button  btn-default" data-dojo-attach-point="addArrowButtonNode">&rarr; </button>
-      <button class="mx-btn btn-default" data-dojo-attach-point="addTextButtonNode">A▏</button>
-      <button class="mx-btn btn-default" data-dojo-attach-point="saveButtonNode">💾 </button>
-      <button class="mx-btn btn-default" data-dojo-attach-point="deleteButtonNode">Delete</button>
-      <button class="mx-btn btn-default" data-dojo-attach-point="increaseFontButtonNode">^</button>
-      <button class="mx-btn btn-default" data-dojo-attach-point="makeBlueButtonNode">Blue</button>
-      <div id="text-wrapper" style="margin-top: 10px" ng-show="getText()">
-         <div id="text-controls">
-            <input type="color" value="" data-dojo-attach-point="textColorNode" size="10">
-            <label for="font-family" style="display:inline-block">Font family:</label>
+    <div class="image-editor__controls">
+
+        <div class="btn-grp">
+            <span class="wdgt-text">Add Annotation</span>
+            <button class="mx-btn btn-default wdgt-btn" data-dojo-attach-point="addTextButtonNode">Add Text</button>
+            <button class="mx-btn btn-default wdgt-btn" data-dojo-attach-point="addArrowButtonNode">Add Line</button>
+        </div>
+
+
+        <div class="btn-grp">
+            <span class="wdgt-text">Font</span>
+
             <select data-dojo-attach-point="fontFamilyNode">
-               <option value="arial">Arial</option>
-               <option value="helvetica" selected>Helvetica</option>
-               <option value="myriad pro">Myriad Pro</option>
-               <option value="delicious">Delicious</option>
-               <option value="verdana">Verdana</option>
-               <option value="georgia">Georgia</option>
-               <option value="courier">Courier</option>
-               <option value="comic sans ms">Comic Sans MS</option>
-               <option value="impact">Impact</option>
-               <option value="monaco">Monaco</option>
-               <option value="optima">Optima</option>
-               <option value="hoefler text">Hoefler Text</option>
-               <option value="plaster">Plaster</option>
-               <option value="engagement">Engagement</option>
+                <option value="arial">Arial</option>
+                <option value="helvetica" selected>Helvetica</option>
+                <option value="myriad pro">Myriad Pro</option>
+                <option value="delicious">Delicious</option>
+                <option value="verdana">Verdana</option>
+                <option value="georgia">Georgia</option>
+                <option value="courier">Courier</option>
+                <option value="comic sans ms">Comic Sans MS</option>
+                <option value="impact">Impact</option>
+                <option value="monaco">Monaco</option>
+                <option value="optima">Optima</option>
+                <option value="hoefler text">Hoefler Text</option>
+                <option value="plaster">Plaster</option>
+                <option value="engagement">Engagement</option>
             </select>
-            <br>
-            <div>
-               <label for="textFontSizeNode">Font size:</label>
-               <input type="range" value="" min="1" max="120" step="1" data-dojo-attach-point="textFontSizeNode">
-            </div>
-         </div>
-      </div>
-   </div>
+            <span class="wdgt-text">Font Size</span>
+            <button class="img-dec-cls" data-dojo-attach-point="decreaseFont"></button>>
+            <button class="img-inc-cls" data-dojo-attach-point="increaseFont"></button>>
+            <span class="wdgt-text">Colour</span>
+            <button class="red wdgt-clr-div" value='red' data-dojo-attach-point="makeRedButtonNode"></button>
+            <button class="blue wdgt-clr-div" value='blue' data-dojo-attach-point="makeBlue"></button>
+            <button class="black wdgt-clr-div" value='black' data-dojo-attach-point="makeBlackButtonNode"></button>
+            <button class="green wdgt-clr-div" value='green' data-dojo-attach-point="makeGreenButtonNode"></button>
+            <button class="yellow wdgt-clr-div" value='yellow' data-dojo-attach-point="makeYellowButtonNode"></button>
+            <button class="mx-btn btn-default wdgt-btn" data-dojo-attach-point="deleteButtonNode">Delete</button>
+        </div>
+    </div>
+    <div class="ctrl-btn-grp">
+        <div class="ctrl-btn-grp-div">
+            <button class="mx-btn btn-default wdgt-ctrl-btn" data-dojo-attach-point="cancelButton">Cancel</button>
+            <button class="mx-btn btn-default wdgt-ctrl-btn" data-dojo-attach-point="retakePhoto">Retake Photo</button>
+            <button class="mx-btn btn-default wdgt-ctrl-btn-save" data-dojo-attach-point="saveButtonNode">Save</button>
+        </div>
+    </div>
 </div>
