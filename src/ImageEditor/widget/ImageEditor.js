@@ -167,17 +167,32 @@ define([
         },
 
         _setupEvents: function () {
+
             this.connect(this.addTextButtonNode, "click", this._drawInteractiveText);
             this.connect(this.addArrowButtonNode, "click", this._drawArrow);
             this.connect(this.saveButtonNode, "click", this._saveToNewImage);
             this.connect(this.deleteButtonNode, "click", this._deleteObject);
-            this.connect(this.increaseFontButtonNode, "click", this._increaseFont);
-            this.connect(this.makeBlueButtonNode, "click", this._makeBlue);
+            
             this.connect(this.textFontSizeNode, "change", this._changeFontSize);
             this.connect(this.textColorNode, "change", this._changeColor);
             this.connect(this.fontFamilyNode, "change", this._changeFontFamily);
 
+            // setup button events
 
+            this.connect(this.makeRedButtonNode, "click", this._makeSpecColor);
+            this.connect(this.makeBlue, "click", this._makeSpecColor);
+            this.connect(this.makeBlackButtonNode, "click", this._makeSpecColor);
+            this.connect(this.makeGreenButtonNode, "click", this._makeSpecColor);
+            this.connect(this.makeYellowButtonNode, "click", this._makeSpecColor);
+
+            // set up text based events
+
+            this.connect(this.increaseFont, "click", this._increaseFont);
+            this.connect(this.decreaseFont,"click",this._decreaseFont);
+
+            
+            // setup canvas events
+        
             this.canvas.on('object:rotating', function () {
                 var obj = this.getActiveObject();
                 obj.set({
@@ -202,8 +217,6 @@ define([
                 this.renderAll();
             });
 
-
-
             this.canvas.on('mouse:up', function () {
                 var obj = this.getActiveObject();
                 obj.set({
@@ -215,6 +228,60 @@ define([
 
         },
 
+        _increaseFont: function () {
+            var activeObject = this.canvas.getActiveObject()
+            if (activeObject.type === 'i-text'){
+                var currentFont = activeObject.fontSize;
+                if (currentFont + 2 < 120){
+                    activeObject.setFontSize(currentFont+2);
+                }
+                else {
+                    activeObject.setFontSize(120);
+                }
+            }
+              
+            this.canvas.renderAll();
+           
+            }
+        ,
+        _decreaseFont: function () {
+            var activeObject = this.canvas.getActiveObject()
+            if (activeObject.type === 'i-text'){
+                var currentFont = activeObject.fontSize;
+                if (currentFont - 2 > 5){
+                    activeObject.setFontSize(currentFont-2);
+                }
+                else {
+                    activeObject.setFontSize(5);
+                }
+            }
+              
+            this.canvas.renderAll();
+           
+            }
+        ,
+
+        _makeSpecColor: function (event) {
+            var activeObject = this.canvas.getActiveObject()
+            var colorOptions = {'red':'#ca261a','blue':'#0467c6','black':'#333333','green':'#098a00','yellow':'#ffbf05'};
+            var hexColor = colorOptions[event.srcElement.value];
+            if (activeObject.type === 'i-text'){
+                //text box
+                activeObject.set("fill",hexColor);
+                activeObject.set("stroke",hexColor);
+            }
+            else{
+                //arrow which is two pieces (TODO: necessary to have both?)
+                for(var item in activeObject._objects){
+                    item = activeObject._objects[item];
+                    item.set("fill",hexColor);
+                    item.set("stroke",hexColor);
+                }
+            }
+            this.canvas.renderAll();
+                    
+            }
+        ,
 
         _changeFontFamily: function () {
 
@@ -234,20 +301,6 @@ define([
         _changeFontSize: function () {
             this.canvas.getActiveObject().setFontSize(this.textFontSizeNode.value);
             this.canvas.renderAll();
-
-        },
-
-        _makeBlue: function () {
-            var activeObject = this.canvas.getActiveObject()
-
-            this.canvas.getActiveObject().set("fill", '#0000ff');
-            this.canvas.getActiveObject().set("stroke", '#0000ff');
-            this.canvas.renderAll();
-            activeObject.item(0).setFill('red');
-            activeObject.item(1).setFill('red');
-            this.canvas.renderAll();
-
-
 
         },
 
@@ -369,7 +422,7 @@ define([
                 .then(this._executeCompletedMicroflow.bind(this))
                 .then(function () {
                     this.saveButtonNode.removeAttribute("disabled");
-                    this.saveButtonNode.innerText = "💾";
+                    this.saveButtonNode.innerText = "Save";
                 }.bind(this));
         },
 
