@@ -6,6 +6,7 @@ test/theme/
 test/userlib/
 test/.classpath
 test/.project
+test/.svn
 *.launch
 *.tmp
 *.lock
