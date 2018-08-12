@@ -65,6 +65,7 @@ define([
             // fabric.Image.fromURL('/img/MyFirstModule$_16_base_back.png', function (oImg) {
             //     this.canvas.add(oImg);
             // }.bind(this));
+            
             this._setupEvents();
         },
 
@@ -356,6 +357,7 @@ define([
         },
 
         _drawArrow: function () {
+        
             var triangle = new fabric.Triangle({
                 width: 10,
                 height: 15,
@@ -406,8 +408,8 @@ define([
                 tl: false
             });
             this.canvas.add(alltogetherObj);
+        
         },
-
         /**
          * SAVE TO NEW IMAGE
          *  - save the canvas contents to a new image object
