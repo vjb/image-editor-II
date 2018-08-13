@@ -202,6 +202,11 @@ define([
                 this.renderAll();
             });
 
+            this.canvas.on('touch:longpress', function() {
+                var obj = this.getActiveObject();
+                alert("ouch")    
+            });
+
             this.canvas.on('object:scaling', function() {
                 var obj = this.getActiveObject();
                 obj.set({
@@ -417,12 +422,12 @@ define([
             var triangle = new fabric.Triangle({
                 width: 40,
                 height: 20,
-                left: 235,
+                left: 250,
                 top: 80,
                 angle: 90,
                 stroke: 'yellow',
                 fill: 'yellow',
-                strokeWidth: 1,
+                strokeWidth: 0,
                 //lockScalingY: true,
                 padding: 15,
                 //lockScalingX:true
