@@ -365,7 +365,8 @@ define([
 
         },
 
-        _increaseFont: function() {
+        
+      /*  _increaseFont: function() {
             var activeObject = this.canvas.getActiveObject()
             var increment = "5";
             var currFontSize = activeObject.get("fontSize");
@@ -375,7 +376,7 @@ define([
             this.canvas.renderAll();
 
         },
-
+*/
 
         _deleteObject: function() {
          
