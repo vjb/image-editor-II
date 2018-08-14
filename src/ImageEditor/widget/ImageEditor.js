@@ -185,6 +185,7 @@ define([
             this.connect(this.makeBlackButtonNode, "click", this._makeSpecColor);
             this.connect(this.makeGreenButtonNode, "click", this._makeSpecColor);
             this.connect(this.makeYellowButtonNode, "click", this._makeSpecColor);
+            this.connect(this.makeWhiteButtonNode, "click", this._makeSpecColor);
 
             // set up text based events
 
@@ -323,7 +324,8 @@ define([
                 'blue': '#0467c6',
                 'black': '#333333',
                 'green': '#098a00',
-                'yellow': '#ffbf05'
+                'yellow': '#ffbf05',
+                'white' : '	#FFFFFF'
             };
             var hexColor = colorOptions[event.srcElement.value];
             if (activeObject.type === 'i-text') {
@@ -376,6 +378,7 @@ define([
 
 
         _deleteObject: function() {
+         
             var activeObject = this.canvas.getActiveObject()
 
             if (activeObject.isCMB) {
@@ -422,7 +425,7 @@ define([
             var triangle = new fabric.Triangle({
                 width: 40,
                 height: 20,
-                left: 250,
+                left: 235,
                 top: 80,
                 angle: 90,
                 stroke: 'yellow',

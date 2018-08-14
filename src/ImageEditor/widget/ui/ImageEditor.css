@@ -1,97 +1,75 @@
-.image-editor__canvas {
-    display: inline-block;
-  }
-  
-  .image-editor__controls {
-    display: inline-block;
-    position: fixed;
-    right: 5px;
-    height: 100%;
-  }
-  
-  .wdgt-btn {
-    color: #0467C6;
-    border-color: #0467C6;
-    background-color: #fff;
-    display: block;
-    height: 40px;
-    width: 160px;
-    margin-top:10px;
-  }
-  
-  .wdgt-text {
-    font-size: 18px;
-    display: block;
-  }
-  
-  .btn-grp {
-    border: 1px solid black;
-    padding: 10px 20px 10px 20px;
-  }
-  
-  .wdgt-clr-div {
-    display: inline-block;
-    width: 38px;
-    height: 36px;
-  }
-  
-  .red {
-    background: rgba(202, 38, 26, 1);
-  }
-  
-  .blue {
-    background: rgba(4, 103, 198, 1);
-  }
-  
-  .black {
-    background: rgba(51, 51, 51, 1);
-  }
-  
-  .green {
-    background: rgba(9, 138, 0, 1);
-    ;
-  }
-  
-  .yellow {
-    background: rgba(255, 191, 5, 1);
-  }
-  .img-dec-cls{
-    background:url('ImageEditor/widget/ui/smaller.png');
-    height:50px;
-    width:50px;
-    display:inline-block;
-  }
-  .img-inc-cls{
-    background:url('ImageEditor/widget/ui/bigger.png');
-    height:50px;
-    width:50px;
-    display:inline-block;
-  }
-  .ctrl-btn-grp{
-    display:block;
+.image-editor {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
 }
-.ctrl-btn-grp-div{
-    display:inline-flext;
-    position:absolute;
-    right:0px;
+.image-editor h5 {
+  margin-top: 24px;
 }
-  .wdgt-ctrl-btn-save {
-    color: #FFF !important;
-    border-color: #0467C6;
-    background-color: #0467C6 !important;
-    display: inline-block;
-    height: 40px;
-    width: 160px;
-    margin-top:10px;
-    margin-right:10px;
-  }
-  .wdgt-ctrl-btn {
-    color: #0467C6;
-    border-color: #0467C6;
-    background-color: #FFF;
-    display: inline-block;
-    height: 40px;
-    width: 160px;
-    margin-top:10px;
-    margin-right:5px;
-  }
+.image-editor h5.no-margin{
+  margin-top: 0;
+}
+.image-editor__canvas{
+  flex: 0 1 auto;
+}
+.image-editor__functions {
+  flex: 0 1 300px;
+}
+.image-editor__canvas{
+ margin-right: 30px; 
+}
+
+.wdgt-clr-div {
+  display: inline-block;
+  width: 38px;
+  height: 36px;
+}
+.btn.mx-button.red {
+  background-color: rgba(202, 38, 26, 1);
+}
+.btn.mx-button.blue {
+  background-color: rgba(4, 103, 198, 1);
+}
+.btn.mx-button.black {
+  background-color: rgba(51, 51, 51, 1);
+}
+.btn.mx-button.green {
+  background-color: rgba(9, 138, 0, 1);
+  
+}
+.btn.mx-button.white {
+  background-color: rgba(255, 255, 255, 1);
+}
+.btn.mx-button.yellow {
+  background-color: rgba(255, 191, 5, 1);
+}
+.img-dec-cls,
+.img-inc-cls {
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+}
+.img-dec-cls:before {
+  font-family: 'FontAwesome';
+  content: "\f068";
+  font-size: 20px;
+}
+.img-inc-cls:before {
+  font-family: 'FontAwesome';
+  content: "\f067";
+  font-size: 20px;
+}
+.rotate-cursor:before{
+  font-family: 'FontAwesome';
+  content: "\f0e2";
+  font-size: 16px;
+  color: #000;
+}
+
+
+.fixed-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 300px;
+}
