@@ -418,7 +418,9 @@ define([
                 mtr: true,
                 tl: false
             });
+            
             this.canvas.add(itext);
+            this.canvas.moveTo(itext,2);
         },
 
         _drawArrow: function() {
@@ -480,6 +482,7 @@ define([
 
             this._drawInteractiveText();
             this.canvas.add(alltogetherObj);
+            this.canvas.moveTo(alltogetherObj,1);
 
         },
         /**
@@ -598,7 +601,9 @@ define([
                     isCMB: true,
                     padding: 7,
                 });
+                
                 this.canvas.add(oImg);
+                this.canvas.moveTo(oImg,0);
             }.bind(this));
         },
 
