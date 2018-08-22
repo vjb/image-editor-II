@@ -394,10 +394,10 @@ define([
         _drawInteractiveText: function() {
             var itext = new fabric.IText('Enter your Text', {
                 left: this.canvas.getWidth() / 2,
-                top: this.canvas.getHeight() / 2,
-                fill: '#FFFF00',
+                top: this.canvas.getHeight() / 3,
+                fill: '#ffbf05',
                 strokeWidth: 2,
-                stroke: "#FFFF00",
+                stroke: "#ffbf05",
                 originX: 'center',
                 originY: 'center',
                 borderColor: '#fd5f00',
@@ -429,8 +429,8 @@ define([
                 left: 235,
                 top: 80,
                 angle: 90,
-                stroke: 'yellow',
-                fill: 'yellow',
+                stroke: '#ffbf05',
+                fill: '#ffbf05',
                 strokeWidth: 0,
                 //lockScalingY: true,
                 padding: 15,
@@ -440,8 +440,8 @@ define([
             var line = new fabric.Line([50, 100, 200, 100], {
                 left: 75,
                 top: 90,
-                stroke: 'yellow',
-                fill: 'yellow',
+                stroke: '#ffbf05',
+                fill: '#ffbf05',
                 strokeWidth: 20,
                 lockScalingY: true,
                 padding: 15,
@@ -476,8 +476,9 @@ define([
                 mtr: true,
                 tl: false
             });
+            
 
-
+            this._drawInteractiveText();
             this.canvas.add(alltogetherObj);
 
         },
