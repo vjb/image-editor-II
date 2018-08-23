@@ -172,6 +172,7 @@ define([
             this.connect(this.addTextButtonNode, "click", this._drawInteractiveText);
             this.connect(this.addArrowButtonNode, "click", this._drawArrow);
             this.connect(this.saveButtonNode, "click", this._saveToNewImage);
+            this.connect(this.cancelButtonNode, "click", this._cancel);
             this.connect(this.deleteButtonNode, "click", this._deleteObject);
 
             this.connect(this.textFontSizeNode, "change", this._changeFontSize);
@@ -484,6 +485,10 @@ define([
             this.canvas.add(alltogetherObj);
             this.canvas.moveTo(alltogetherObj,1);
 
+        },
+
+        _cancel: function(){
+            this.mxform.close();
         },
         /**
          * SAVE TO NEW IMAGE
