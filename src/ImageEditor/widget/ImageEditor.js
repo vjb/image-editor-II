@@ -597,7 +597,14 @@ define([
                     isCMB: true,
                     padding: 7,
                 });
-                this.canvas.add(oImg);
+                
+                // passing an image with a name that includes transparent will make sure the image
+                // doesn't actually get drawn.  hackey.  should be a boolean on the widget
+                if (! image.imImage.includes('transparent'))
+                {
+                    this.canvas.add(oImg);
+                }         
+                
             }.bind(this));
         },
 
