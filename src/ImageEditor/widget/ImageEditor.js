@@ -172,6 +172,7 @@ define([
             this.connect(this.addTextButtonNode, "click", this._drawInteractiveText);
             this.connect(this.addArrowButtonNode, "click", this._drawArrow);
             this.connect(this.saveButtonNode, "click", this._saveToNewImage);
+            this.connect(this.cancelButtonNode, "click", this._cancel);
             this.connect(this.deleteButtonNode, "click", this._deleteObject);
 
             this.connect(this.textFontSizeNode, "change", this._changeFontSize);
@@ -394,10 +395,10 @@ define([
         _drawInteractiveText: function() {
             var itext = new fabric.IText('Enter your Text', {
                 left: this.canvas.getWidth() / 2,
-                top: this.canvas.getHeight() / 2,
-                fill: '#FFFF00',
+                top: this.canvas.getHeight() / 3,
+                fill: '#ffbf05',
                 strokeWidth: 2,
-                stroke: "#FFFF00",
+                stroke: "#ffbf05",
                 originX: 'center',
                 originY: 'center',
                 borderColor: '#fd5f00',
@@ -418,7 +419,9 @@ define([
                 mtr: true,
                 tl: false
             });
+            
             this.canvas.add(itext);
+            this.canvas.moveTo(itext,2);
         },
 
         _drawArrow: function() {
@@ -429,8 +432,8 @@ define([
                 left: 235,
                 top: 80,
                 angle: 90,
-                stroke: 'yellow',
-                fill: 'yellow',
+                stroke: '#ffbf05',
+                fill: '#ffbf05',
                 strokeWidth: 0,
                 //lockScalingY: true,
                 padding: 15,
@@ -440,8 +443,8 @@ define([
             var line = new fabric.Line([50, 100, 200, 100], {
                 left: 75,
                 top: 90,
-                stroke: 'yellow',
-                fill: 'yellow',
+                stroke: '#ffbf05',
+                fill: '#ffbf05',
                 strokeWidth: 20,
                 lockScalingY: true,
                 padding: 15,
@@ -476,10 +479,16 @@ define([
                 mtr: true,
                 tl: false
             });
+            
 
-
+            this._drawInteractiveText();
             this.canvas.add(alltogetherObj);
+            this.canvas.moveTo(alltogetherObj,1);
 
+        },
+
+        _cancel: function(){
+            this.mxform.close();
         },
         /**
          * SAVE TO NEW IMAGE
@@ -602,8 +611,11 @@ define([
                 // doesn't actually get drawn.  hackey.  should be a boolean on the widget
                 if (! image.imImage.includes('transparent'))
                 {
+                    this.canvas.moveTo(oImg,0);
                     this.canvas.add(oImg);
                 }         
+                
+                
                 
             }.bind(this));
         },
