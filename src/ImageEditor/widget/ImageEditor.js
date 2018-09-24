@@ -18,7 +18,6 @@ define([
     "ImageEditor/lib/canvas-to-blob",
 
 
-
     "dojo/text!ImageEditor/widget/template/ImageEditor.html"
 ], function(declare, _WidgetBase, _TemplatedMixin, dom, dojoDom, dojoProp, dojoGeometry, dojoClass, dojoStyle, dojoConstruct, dojoArray, lang, dojoText, dojoHtml, dojoEvent, fabric, canvasToBlob, widgetTemplate) {
     "use strict";
