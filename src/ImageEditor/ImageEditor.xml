@@ -6,6 +6,16 @@
     <icon />
 
     <properties>
+
+<property key="SaveText" type="translatableString">
+ <caption>Save Button Text</caption>
+ <category>Translatable Text</category>
+ <description>Text label of the Save Button</description>
+ <translations>
+  <translation lang="en_US">Save</translation>
+ </translations>
+</property>
+
         <property key="pathToParent" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="false">
           <caption>Path to Parent</caption>
           <category>General</category>
