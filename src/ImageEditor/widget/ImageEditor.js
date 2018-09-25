@@ -310,7 +310,6 @@ define([
 
             this.canvas.renderAll();
 
-            alert(this.SaveText);
 
         },
         _decreaseFont: function() {
