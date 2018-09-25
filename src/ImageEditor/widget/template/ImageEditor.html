@@ -6,14 +6,14 @@
         <div class="image-editor__controls ">
 
             <div class="btn-grp">
-                <h5 class="wdgt-text no-margin">Annotation Options</h5>
+                <h5 data-dojo-attach-point="annotateTextNode" class="wdgt-text no-margin">Annotation Options</h5>
                 <button class="btn mx-button btn-block btn-default" data-dojo-attach-point="addTextButtonNode">Add Text</button>
                 <button class="btn mx-button btn-block btn-default" data-dojo-attach-point="addArrowButtonNode">Add Line</button>
                 <button class="btn mx-button btn-block btn-default" data-dojo-attach-point="deleteButtonNode">Remove Item</button>
             </div>
 
             <div id="color-controller" class="btn-grp">
-                <h5 class="wdgt-text">Colour</h5>
+                <h5 data-dojo-attach-point="ColorTextNode" class="wdgt-text">Colour</h5>
                 <button class="black wdgt-clr-div btn mx-button" value='black' data-dojo-attach-point="makeBlackButtonNode"></button>
                 <button class="white wdgt-clr-div btn mx-button" value='white' data-dojo-attach-point="makeWhiteButtonNode"></button>
                 <button class="yellow wdgt-clr-div btn mx-button" value='yellow' data-dojo-attach-point="makeYellowButtonNode"></button>
@@ -41,7 +41,7 @@
                 <option value="plaster">Plaster</option>
                 <option value="engagement">Engagement</option>
             </select>-->
-                <h5 class="wdgt-text">Font Size</h5>
+                <h5 data-dojo-attach-point="FontSizeTextNode" class="wdgt-text">Font Size</h5>
                 <button class="img-dec-cls btn mx-button btn-default" data-dojo-attach-point="decreaseFont"></button>
                 <button class="img-inc-cls btn mx-button btn-default" data-dojo-attach-point="increaseFont"></button>
             </div>

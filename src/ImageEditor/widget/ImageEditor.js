@@ -66,7 +66,16 @@ define([
             // }.bind(this));
 
             this._setupEvents();
-        },
+            this.saveButtonNode.innerText = this.SaveText;
+            this.cancelButtonNode.innerText = this.CancelText;
+            this.addTextButtonNode.innerText = this.AddTextText;
+            this.addArrowButtonNode.innerText = this.AddArrowText;
+            this.deleteButtonNode.innerText = this.RemoveItemText;
+            this.annotateTextNode.innerText = this.AnnotateOptionsText;
+            this.ColorTextNode.innerText = this.ColorText;
+            this.FontSizeTextNode.innerText = this.FontSizeText;
+
+            },
 
         update: function(obj, callback) {
             logger.debug(this.id + ".update");
@@ -394,7 +403,7 @@ define([
         },
 
         _drawInteractiveText: function() {
-            var itext = new fabric.IText('Enter your Text', {
+            var itext = new fabric.IText(this.EnterTextMessage, {
                 left: this.canvas.getWidth() / 2,
                 top: this.canvas.getHeight() / 3,
                 fill: '#ffbf05',

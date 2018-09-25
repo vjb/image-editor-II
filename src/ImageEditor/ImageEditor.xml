@@ -16,6 +16,80 @@
  </translations>
 </property>
 
+
+<property key="CancelText" type="translatableString">
+ <caption>Cancel Button Text</caption>
+ <category>Translatable Text</category>
+ <description>Text label of the Cancel Button</description>
+ <translations>
+  <translation lang="en_US">Cancel</translation>
+ </translations>
+</property>
+
+<property key="AddTextText" type="translatableString">
+ <caption>Add Text Button Text</caption>
+ <category>Translatable Text</category>
+ <description>Text label of the Add Text Button</description>
+ <translations>
+  <translation lang="en_US">Add Text</translation>
+ </translations>
+</property>
+
+<property key="AddArrowText" type="translatableString">
+ <caption>Add Arrow Button Text</caption>
+ <category>Translatable Text</category>
+ <description>Text label of the Add Arrow Button</description>
+ <translations>
+  <translation lang="en_US">Add Arrow</translation>
+ </translations>
+</property>
+
+<property key="RemoveItemText" type="translatableString">
+ <caption>Remove Item Button Text</caption>
+ <category>Translatable Text</category>
+ <description>Text label of the Remove Item Button</description>
+ <translations>
+  <translation lang="en_US">Remove Item</translation>
+ </translations>
+</property>
+
+<property key="EnterTextMessage" type="translatableString">
+ <caption>Enter Text (Default) Message</caption>
+ <category>Translatable Text</category>
+ <description>The default text that appears when you add text </description>
+ <translations>
+  <translation lang="en_US">Enter your text here</translation>
+ </translations>
+</property>
+
+<property key="AnnotateOptionsText" type="translatableString">
+ <caption>Annotate Options Text</caption>
+ <category>Translatable Text</category>
+ <description>Annotate Options</description>
+ <translations>
+  <translation lang="en_US">Annotate Options</translation>
+ </translations>
+</property>
+
+<property key="ColorText" type="translatableString">
+ <caption>Colour</caption>
+ <category>Translatable Text</category>
+ <description>Colour</description>
+ <translations>
+  <translation lang="en_US">Colour</translation>
+ </translations>
+</property>
+
+<property key="FontSizeText" type="translatableString">
+ <caption>Font Size Text</caption>
+ <category>Translatable Text</category>
+ <description>Font Size Text</description>
+ <translations>
+  <translation lang="en_US">Font Size</translation>
+ </translations>
+</property>
+
+
         <property key="pathToParent" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="false">
           <caption>Path to Parent</caption>
           <category>General</category>
