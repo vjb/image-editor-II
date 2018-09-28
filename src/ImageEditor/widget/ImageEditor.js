@@ -431,7 +431,7 @@ define([
             });
             
             this.canvas.add(itext);
-            this.canvas.moveTo(itext,2);
+            this.canvas.moveTo(itext,3);
         },
 
         _drawArrow: function() {
@@ -493,7 +493,7 @@ define([
 
             this._drawInteractiveText();
             this.canvas.add(alltogetherObj);
-            this.canvas.moveTo(alltogetherObj,1);
+            this.canvas.moveTo(alltogetherObj,2);
 
         },
 
@@ -597,17 +597,17 @@ try{
             var num_overlays = overlays.value.length;
             //var url=mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
             
-            for (var i = 0; i < num_overlays-1; i++) { 
+          
                 
-            var url = mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[i]);
+            var url = mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
         
 
             fabric.Image.fromURL(url, function(oImg) {
                 oImg.set({
                     width: 150,
                     height: 150,
-                    left: 100*i,
-                    top: 100*i,
+                    left: 100,
+                    top: 100,
                     //originX: 'center',
                     //originY: 'center',
                     centeredScaling: true,
@@ -630,8 +630,9 @@ try{
             
             }.bind(this));
         }
+        
 
-        }
+        
     catch(err){console.log('no cmb to display')}},
 
     _drawDefaultCMB2: function() {
@@ -641,17 +642,17 @@ try{
                     var num_overlays = overlays.value.length;
                     //var url=mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
                     
-                    for (var i = 1; i < num_overlays; i++) { 
+                    
                         
-                    var url = mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[i]);
+                    var url = mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[1]);
                 
         
-                    fabric.Image.fromURL(url, function(oImg) {
-                        oImg.set({
+                    fabric.Image.fromURL(url, function(oImg2) {
+                        oImg2.set({
                             width: 150,
                             height: 150,
-                            left: 100*i,
-                            top: 100*i,
+                            left: 200,
+                            top: 200,
                             //originX: 'center',
                             //originY: 'center',
                             centeredScaling: true,
@@ -669,11 +670,11 @@ try{
                         });
                        
                         
-                        this.canvas.add(oImg);
-                        this.canvas.moveTo(oImg, 0);
+                        this.canvas.add(oImg2);
+                        this.canvas.moveTo(oImg2, 0);
                     
                     }.bind(this));
-                }
+                
         
                 }
             catch(err){console.log('no cmb to display')}},
