@@ -83,6 +83,7 @@ define([
             this._contextObj = obj;
             if (this._contextObj) {
                 this._drawDefaultCMB();
+                this._drawDefaultCMB2();
             }
             this._updateRendering(callback);
         },
@@ -506,14 +507,14 @@ define([
          */
         _saveToNewImage: function() {
             this.saveButtonNode.setAttribute("disabled", null);
-            this.saveButtonNode.innerText = "Saving..."
+            //this.saveButtonNode.innerText = "Saving..."
             this._getNewImageObject()
                 .then(this._copyParentAssociationToNewObject.bind(this))
                 .then(this._saveCanvasContentsToImage.bind(this))
                 .then(this._executeCompletedMicroflow.bind(this))
                 .then(function() {
                     this.saveButtonNode.removeAttribute("disabled");
-                    this.saveButtonNode.innerText = "Save";
+                   // this.saveButtonNode.innerText = "Save";
                 }.bind(this));
         },
 
@@ -596,20 +597,17 @@ try{
             var num_overlays = overlays.value.length;
             //var url=mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
             
-            for (var i = 0; i < num_overlays; i++) { 
+            for (var i = 0; i < num_overlays-1; i++) { 
                 
             var url = mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[i]);
-        console.log(100*i);
+        
 
-        var left_ = 100*i;
-        var top_ = 200*i;
-
-           fabric.Image.fromURL(url, async function(oImg) {
+            fabric.Image.fromURL(url, function(oImg) {
                 oImg.set({
                     width: 150,
                     height: 150,
-                    left: left_,
-                    top: top_,
+                    left: 100*i,
+                    top: 100*i,
                     //originX: 'center',
                     //originY: 'center',
                     centeredScaling: true,
@@ -626,23 +624,59 @@ try{
                     padding: 7,
                 });
                
-                /*
-                // passing an image with a name that includes transparent will make sure the image
-                // doesn't actually get drawn.  hackey.  should be a boolean on the widget
-                if (! url.includes('transparent'))
-                {
-                    this.canvas.moveTo(oImg,0);
-                    this.canvas.add(oImg);
-                }         
-                */
                 
                 this.canvas.add(oImg);
-                this.canvas.renderAll();
-              //  this.canvas.moveTo(oImg, 0);
+                this.canvas.moveTo(oImg, 0);
+            
             }.bind(this));
         }
+
         }
     catch(err){console.log('no cmb to display')}},
+
+    _drawDefaultCMB2: function() {
+
+        try{
+                    var overlays = this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"];
+                    var num_overlays = overlays.value.length;
+                    //var url=mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
+                    
+                    for (var i = 1; i < num_overlays; i++) { 
+                        
+                    var url = mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[i]);
+                
+        
+                    fabric.Image.fromURL(url, function(oImg) {
+                        oImg.set({
+                            width: 150,
+                            height: 150,
+                            left: 100*i,
+                            top: 100*i,
+                            //originX: 'center',
+                            //originY: 'center',
+                            centeredScaling: true,
+                            hasControls: true,
+                            lockUniScaling: true,
+                            lockScalingFlip: true,
+                            transparentCorners: false,
+                            borderColor: '#fd5f00',
+                            cornerColor: '#fd5f00',
+                            cornerSize: 20,
+                            rotatingPointOffset: 80,
+                            deletable: false,
+                            isCMB: true,
+                            padding: 7,
+                        });
+                       
+                        
+                        this.canvas.add(oImg);
+                        this.canvas.moveTo(oImg, 0);
+                    
+                    }.bind(this));
+                }
+        
+                }
+            catch(err){console.log('no cmb to display')}},
 
         /**
          * execute the specified Microflow, if one exists
