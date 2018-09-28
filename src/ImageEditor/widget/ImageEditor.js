@@ -590,18 +590,28 @@ define([
          * Look at the context object, and draw the right image (based on the mapping in this.imageMapping)
          */
         _drawDefaultCMB: function() {
-            var key = this._contextObj.get(this.imAttribute); // "_16Back"
-            var image = this.imageMapping.find(function(pair) {
-                return pair.imKey === key
-            }); // {imKey: "_16Back", imImage: "...?"}
-            fabric.Image.fromURL(image.imImage, function(oImg) {
+
+try{
+            var overlays = this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"];
+            var num_overlays = overlays.value.length;
+            //var url=mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
+            
+            for (var i = 0; i < num_overlays; i++) { 
+                
+            var url = mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[i]);
+        console.log(100*i);
+
+        var left_ = 100*i;
+        var top_ = 200*i;
+
+           fabric.Image.fromURL(url, async function(oImg) {
                 oImg.set({
                     width: 150,
                     height: 150,
-                    left: 125,
-                    top: 125,
-                    originX: 'center',
-                    originY: 'center',
+                    left: left_,
+                    top: top_,
+                    //originX: 'center',
+                    //originY: 'center',
                     centeredScaling: true,
                     hasControls: true,
                     lockUniScaling: true,
@@ -615,19 +625,24 @@ define([
                     isCMB: true,
                     padding: 7,
                 });
-                
+               
+                /*
                 // passing an image with a name that includes transparent will make sure the image
                 // doesn't actually get drawn.  hackey.  should be a boolean on the widget
-                if (! image.imImage.includes('transparent'))
+                if (! url.includes('transparent'))
                 {
                     this.canvas.moveTo(oImg,0);
                     this.canvas.add(oImg);
                 }         
+                */
                 
-                
-                
+                this.canvas.add(oImg);
+                this.canvas.renderAll();
+              //  this.canvas.moveTo(oImg, 0);
             }.bind(this));
-        },
+        }
+        }
+    catch(err){console.log('no cmb to display')}},
 
         /**
          * execute the specified Microflow, if one exists
