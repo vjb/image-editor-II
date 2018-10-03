@@ -83,7 +83,10 @@ define([
             this._contextObj = obj;
             if (this._contextObj) {
                 this._drawDefaultCMB();
+            if (this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value.length >1 ){
                 this._drawDefaultCMB2();
+            }
+
             }
             this._updateRendering(callback);
         },
