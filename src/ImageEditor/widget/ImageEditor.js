@@ -83,9 +83,18 @@ define([
             this._contextObj = obj;
             if (this._contextObj) {
                 this._drawDefaultCMB();
-            if (this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value.length >1 ){
-                this._drawDefaultCMB2();
+
+            try {
+                if (this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value.length >1 ){
+                    this._drawDefaultCMB2();
+                }
+            } catch (error) {
+                console.log("No 2nd CMB to site");
             }
+            
+
+
+
 
             }
             this._updateRendering(callback);
