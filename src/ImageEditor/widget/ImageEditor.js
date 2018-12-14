@@ -98,7 +98,7 @@ define([
         logger.debug(this.id + ".update");
 
         this._contextObj = obj;
-       
+
         if (this._contextObj) {
           this._drawDefaultCMB();
 
@@ -113,14 +113,12 @@ define([
           } catch (error) {
             console.log("No 2nd CMB to site");
           }
-        
-          if(this.isOffline){
 
+          if (this.isOffline) {
             this._drawDefaultCMBOffline();
-
           }
         }
-        
+
         this._updateRendering(callback);
       },
 
@@ -327,8 +325,13 @@ define([
 
         this.canvas.on("touch:longpress", function() {
           var obj = this.getActiveObject();
-          alert("ouch");
+          alert("longpress");
         });
+
+        this.canvas.on("touch:shake", function() {
+            var obj = this.getActiveObject();
+            alert("shake");
+          });
 
         this.canvas.on("object:scaling", function() {
           var obj = this.getActiveObject();
@@ -753,62 +756,67 @@ define([
 
       _drawDefaultCMBOffline: function() {
         try {
-            /*
+          /*
           var overlays = this._contextObj.jsonData.attributes[
             "DeliveryPlanning.CMBImages_CMBImageOverlay"
           ];
           var num_overlays = overlays.value.length;
           //var url=mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
 */
-console.log("before");
+          console.log("before");
 
-mx.data.getOffline("DeliveryPlanning.CMBImages", [], {}, function(mxobjs, count) {
-    console.log("There are " + count + " CMBImages offline");
+          var guid = this._contextObj.getGuid();
 
-    var url = mx.data.getDocumentUrl( mxobjs[0].getGuid()      );
+          mx.data.getOffline(
+            "DeliveryPlanning.CMBImages",
+            [
+              {
+                attribute: "DeliveryPlanning.CMBImages_SiteImage",
+                operator: "equals",
+                value: guid // the guid of the owner, which is a Person entity
+              }
+            ],
+            {},
+            function(mxobjs, count) {
+              console.log(guid);
+              console.log("There are " + count + " CMBImages offline");
 
-console.log(url)
+              var url = mx.data.getDocumentUrl(mxobjs[0].getGuid());
 
+              console.log(url);
 
-fabric.Image.fromURL(
-    url,
-    function(oImg) {
-      oImg.set({
-        width: 150,
-        height: 150,
-        left: 100,
-        top: 100,
-        //originX: 'center',
-        //originY: 'center',
-        centeredScaling: true,
-        hasControls: true,
-        lockUniScaling: true,
-        lockScalingFlip: true,
-        transparentCorners: false,
-        borderColor: "#fd5f00",
-        cornerColor: "#fd5f00",
-        cornerSize: 20,
-        rotatingPointOffset: 80,
-        deletable: false,
-        isCMB: true,
-        padding: 7
-      });
+              fabric.Image.fromURL(
+                url,
+                function(oImg) {
+                  oImg.set({
+                    width: 150,
+                    height: 150,
+                    left: 100,
+                    top: 100,
+                    //originX: 'center',
+                    //originY: 'center',
+                    centeredScaling: true,
+                    hasControls: true,
+                    lockUniScaling: true,
+                    lockScalingFlip: true,
+                    transparentCorners: false,
+                    borderColor: "#fd5f00",
+                    cornerColor: "#fd5f00",
+                    cornerSize: 20,
+                    rotatingPointOffset: 80,
+                    deletable: false,
+                    isCMB: true,
+                    padding: 7
+                  });
 
-      this.canvas.add(oImg);
-      this.canvas.moveTo(oImg, 0);
-    }.bind(this)
-  );
-
-
-  }.bind(this));
-
-
-
-         
+                  this.canvas.add(oImg);
+                  this.canvas.moveTo(oImg, 0);
+                }.bind(this)
+              );
+            }.bind(this)
+          );
 
           console.log("after");
-
-        
         } catch (err) {
           console.log("mobile CMB error");
         }
