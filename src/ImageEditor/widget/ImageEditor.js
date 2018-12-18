@@ -610,7 +610,7 @@ define([
         this._getNewImageObject()
           .then(this._copyParentAssociationToNewObject.bind(this))
           .then(this._saveCanvasContentsToImage.bind(this))
-          .then(this._executeCompletedMicroflow.bind(this))
+          //.then(this._executeCompletedMicroflow.bind(this))//
           .then(
             function() {
               this.saveButtonNode.removeAttribute("disabled");
@@ -773,7 +773,7 @@ define([
               {
                 attribute: "DeliveryPlanning.CMBImages_SiteImage",
                 operator: "equals",
-                value: guid // the guid of the owner, which is a Person entity
+                value: guid // the guid of the owner, which is a SiteImage entity
               }
             ],
             {},

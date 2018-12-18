@@ -1,3 +1,9 @@
+.ImageEditorCanvasClass, .canvas-container, .upper-canvas, .lower-canvas{
+  width : calc(100vw - 400px) !important;
+  height: calc(100vh - 121px) !important;
+  top: 64px;
+ }
+
 .image-editor {
   position: relative;
   display: flex;
