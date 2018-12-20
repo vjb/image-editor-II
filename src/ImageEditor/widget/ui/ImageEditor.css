@@ -1,19 +1,33 @@
-
-
-@media only screen and (max-width: 1024px)
-{
- .image-editor__functions, .image-editor__controls
- {
-   width : 350px !important;
-   height: calc(100vh - 121px) !important;
+.ImageEditorCanvasClass .image-editor {
+  width: 100% !important;
+  height: calc(100vh - 70px) !important;
+  top:5px !important;
  }
-}
-
-.ImageEditorCanvasClass, .canvas-container, .upper-canvas, .lower-canvas{
-  width : calc(100vw - 400px) !important;
-  height: calc(100vh - 121px) !important;
-  top: 64px;
+ 
+ .image-editor__functions {
+  width:38% !important;
+  max-width:38%;
+  margin-right:2%;
  }
+ 
+ .canvas-container {
+  width: 100% !important;
+  height: 100% !important;
+  
+ }
+ 
+ .image-editor__canvas {
+  min-width:68% !important;
+  margin-right:2%;
+ }
+ 
+ .canvas-container canvas {
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+ }
+
 
 .image-editor {
   position: relative;

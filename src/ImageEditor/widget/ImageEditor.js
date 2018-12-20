@@ -100,6 +100,12 @@ define([
         this._contextObj = obj;
 
         if (this._contextObj) {
+          if (this.isOffline) {
+            console.log("going Offline");
+            this._drawDefaultCMBOffline();
+          }
+          else{
+        
           this._drawDefaultCMB();
 
           try {
@@ -113,10 +119,8 @@ define([
           } catch (error) {
             console.log("No 2nd CMB to site");
           }
-
-          if (this.isOffline) {
-            this._drawDefaultCMBOffline();
-          }
+        }
+          
         }
 
         this._updateRendering(callback);
@@ -765,13 +769,51 @@ define([
 */
           console.log("before");
 
-          var guid = this._contextObj.getGuid();
+          var guidCMBImg = this._contextObj.jsonData.attributes["DeliveryPlanning.SiteImage_CMBImages"].value;
 
-          mx.data.getOffline(
+          mx.data.get({
+            guid: guidCMBImg,
+            callback: function(obj) {
+                console.log("Got image back " + obj.getGuid());
+
+                var url = mx.data.getDocumentUrl(obj.getGuid());
+
+                fabric.Image.fromURL(
+                  url,
+                  function(oImg) {
+                    oImg.set({
+                      width: 150,
+                      height: 150,
+                      left: 100,
+                      top: 100,
+                      //originX: 'center',
+                      //originY: 'center',
+                      centeredScaling: true,
+                      hasControls: true,
+                      lockUniScaling: true,
+                      lockScalingFlip: true,
+                      transparentCorners: false,
+                      borderColor: "#fd5f00",
+                      cornerColor: "#fd5f00",
+                      cornerSize: 20,
+                      rotatingPointOffset: 80,
+                      deletable: false,
+                      isCMB: true,
+                      padding: 7
+                    });
+  
+                    this.canvas.add(oImg);
+                    this.canvas.moveTo(oImg, 0);
+                  }.bind(this)
+                );
+            }.bind(this)
+        });
+
+          /* mx.data.getOffline(
             "DeliveryPlanning.CMBImages",
             [
               {
-                attribute: "DeliveryPlanning.CMBImages_SiteImage",
+                attribute: "DeliveryPlanning.SiteImage_CMBImages",
                 operator: "equals",
                 value: guid // the guid of the owner, which is a SiteImage entity
               }
@@ -814,7 +856,7 @@ define([
                 }.bind(this)
               );
             }.bind(this)
-          );
+          ); */
 
           console.log("after");
         } catch (err) {
