@@ -1,33 +1,40 @@
+@media only screen and (max-width: 1024px){
 .ImageEditorCanvasClass .image-editor {
   width: 100% !important;
   height: calc(100vh - 70px) !important;
   top:5px !important;
  }
- 
+}
+ @media only screen and (max-width: 1024px){
  .image-editor__functions {
   width:38% !important;
   max-width:38%;
   margin-right:2%;
  }
- 
+}
+ @media only screen and (max-width: 1024px){
  .canvas-container {
   width: 100% !important;
   height: 100% !important;
   
  }
- 
+}
+ @media only screen and (max-width: 1024px) {
  .image-editor__canvas {
   min-width:68% !important;
   margin-right:2%;
  }
- 
- .canvas-container canvas {
+}
+
+ @media only screen and (max-width: 1024px) {
+   .canvas-container canvas 
+  {
   width: auto !important;
   height: auto !important;
   max-width: 100% !important;
   max-height: 100% !important;
- }
-
+  }
+}
 
 .image-editor {
   position: relative;

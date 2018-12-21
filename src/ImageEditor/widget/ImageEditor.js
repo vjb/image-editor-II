@@ -65,6 +65,7 @@ define([
       imageMapping: null, // {imKey: string, imImage: image}
       pathToParent: null,
       onUploadComplete: null,
+      onUploadCompleteNano: null,
 
       // Internal variables.
       _handles: null,
@@ -614,7 +615,7 @@ define([
         this._getNewImageObject()
           .then(this._copyParentAssociationToNewObject.bind(this))
           .then(this._saveCanvasContentsToImage.bind(this))
-          //.then(this._executeCompletedMicroflow.bind(this))//
+          .then(this._executeCompletedMicroflow.bind(this))
           .then(
             function() {
               this.saveButtonNode.removeAttribute("disabled");
@@ -915,25 +916,49 @@ define([
        * execute the specified Microflow, if one exists
        */
       _executeCompletedMicroflow: function(guid) {
-        return new Promise(
-          lang.hitch(this, function(resolve, reject) {
-            if (this.onUploadComplete) {
-              mx.data.action({
-                params: {
-                  actionname: this.onUploadComplete,
-                  applyto: "selection",
-                  guids: [guid]
-                },
-                origin: this.mxform,
-                callback: resolve,
-                error: reject
-              });
-            } else {
-              resolve();
-            }
-          })
-        );
+        if(!this.isOffline)
+        {
+          return new Promise(
+            lang.hitch(this, function(resolve, reject) {
+              if (this.onUploadComplete) {
+                mx.data.action({
+                  params: {
+                    actionname: this.onUploadComplete,
+                    applyto: "selection",
+                    guids: [guid]
+                  },
+                  origin: this.mxform,
+                  callback: resolve,
+                  error: reject
+                });
+              } else {
+                resolve();
+              }
+            })
+          );
+        }
+        else
+        {
+          //offline mode, lets try doing  the nanoflow
+          return new Promise(
+            lang.hitch(this, function(resolve, reject) {
+              if (this.onUploadCompleteNano) {
+                mx.data.callNanoflow({
+                  nanoflow: this.onUploadCompleteNano,
+                  origin: this.mxform,
+                  context: this.mxcontext,
+                  callback: resolve,
+                  error: reject
+                 }, this);
+  
+              } else {
+                resolve();
+              }
+            })
+          );
+        }
       }
+
     }
   );
 });
