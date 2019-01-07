@@ -972,6 +972,7 @@ define([
         else
         {
           //offline mode, lets try doing  the nanoflow
+          
           return new Promise(
             lang.hitch(this, function(resolve, reject) {
               if (this.onUploadCompleteNano) {
