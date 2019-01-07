@@ -112,6 +112,16 @@
           <description>The nanoflow to be called when the upload finishes. Will receive the new object (of the same entity as the current context) as a parameter</description>
           <returnType type="Void" />
         </property>
+        <property key="outgoingEntity" type="entity" isPath="optional" allowNonPersistableEntities="false" pathType="reference" required="false">
+            <caption>Outgoing Entity</caption>
+          <category>General</category>
+          <description>The type of object returned from the widget. If not set, it will be the same type as context. Should be set if Offline is set to true.</description>
+        </property>
+        <property key="outgoingEntityAssociation" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="false">
+            <caption>Outgoing Entity Assocation</caption>
+          <category>General</category>
+          <description>The association between the context object and the object returned from the widget. Should be set if Offline is set to true.</description>
+        </property>
         <property key="imAttribute" type="attribute" required="false">
           <caption>Attribute</caption>
           <category>Appearance</category>

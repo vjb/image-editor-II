@@ -66,6 +66,8 @@ define([
       pathToParent: null,
       onUploadComplete: null,
       onUploadCompleteNano: null,
+      outgoingEntity: null,
+      outgoingEntityAssociation: null,
 
       // Internal variables.
       _handles: null,
@@ -615,13 +617,9 @@ define([
         this._getNewImageObject()
           .then(this._copyParentAssociationToNewObject.bind(this))
           .then(this._saveCanvasContentsToImage.bind(this))
-          .then(this._executeCompletedMicroflow.bind(this))
-          .then(
-            function() {
-              this.saveButtonNode.removeAttribute("disabled");
-              // this.saveButtonNode.innerText = "Save";
-            }.bind(this)
-          );
+          .then(this._executeCompletedMicroflow.bind(this));
+          
+          this.saveButtonNode.removeAttribute("disabled");
       },
 
       /**
@@ -636,17 +634,45 @@ define([
       _getNewImageObject: function() {
         return new Promise(
           lang.hitch(this, function(resolve, reject) {
-            // create a new object of this entity
-            mx.data.create({
-              entity: this._contextObj.getEntity(),
-              callback: lang.hitch(this, function(obj) {
-                console.log("The object has been created");
-                resolve(obj);
-              }),
-              error: function(e) {
-                reject("there was an error creating this object");
-              }
-            });
+            if(!this.isOffline)
+            {
+              // create a new object of this entity
+              mx.data.create({
+                entity: this._contextObj.getEntity(),
+                callback: lang.hitch(this, function(obj) {
+                  console.log("The object has been created");
+                  resolve(obj);
+                }),
+                error: function(e) {
+                  reject("there was an error creating this object");
+                }
+              });
+            }else
+            {// create a new object of this entity
+              var overlayEntity = this.outgoingEntity;
+              var overlayAssociation = this.outgoingEntityAssociation.split("/")[0];
+              var guidSiteImage = this._contextObj.getGuid();
+
+              mx.data.getOffline(overlayEntity, [{
+                attribute: overlayAssociation,
+                operator: "equals",
+                value: guidSiteImage // the guid of the owner, which is a Person entity
+              }], {}, function(mxobjs, count) {
+                console.log("There are " + count + " overlays for "+ guidSiteImage);
+                resolve(mxobjs[0]);
+              });
+
+              /* mx.data.get({
+                guid: guidCMBOverlay,
+                callback: lang.hitch(this, function(obj) {
+                  console.log("The object has been retrieved");
+                  resolve(obj);
+                }),
+                error: function(e) {
+                  reject("there was an error creating this object");
+                }
+              }); */
+            }
           })
         );
       },
@@ -660,16 +686,22 @@ define([
             var associationName = this.pathToParent.split("/")[0];
             // context object exists and is tied to a parent entity
 
-            if (this._contextObj && this._contextObj.get(associationName)) {
-              object.set(
-                associationName,
-                this._contextObj.get(associationName)
+            if(this._contextObj.getEntity() == object.getEntity())
+            {
+              if (this._contextObj && this._contextObj.get(associationName)) {
+                object.set(
+                  associationName,
+                  this._contextObj.get(associationName)
+                );
+                resolve(object);
+              }
+              reject(
+                "Context object is empty or there is no parent association set"
               );
+            }
+            else{
               resolve(object);
             }
-            reject(
-              "Context object is empty or there is no parent association set"
-            );
           })
         );
       },
