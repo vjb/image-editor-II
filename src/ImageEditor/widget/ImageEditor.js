@@ -62,6 +62,7 @@ define([
       canvasHeight: 500,
       canvasWidth: 900,
       imAttribute: null,
+      anchorSize: null,
       imageMapping: null, // {imKey: string, imImage: image}
       pathToParent: null,
       onUploadComplete: null,
@@ -72,6 +73,9 @@ define([
       // Internal variables.
       _handles: null,
       _contextObj: null,
+      _totalAnnotations: null,
+      _progressBarDisplayed: null,
+      _progressBarId: null,
 
       constructor: function() {
         this._handles = [];
@@ -95,6 +99,9 @@ define([
         this.annotateTextNode.innerText = this.AnnotateOptionsText;
         this.ColorTextNode.innerText = this.ColorText;
         this.FontSizeTextNode.innerText = this.FontSizeText;
+        this._totalAnnotations = 0;
+        this._progressBarDisplayed = false;
+        
       },
 
       update: function(obj, callback) {
@@ -504,10 +511,11 @@ define([
         var activeObject = this.canvas.getActiveObject();
 
         if (activeObject.isCMB) {
-          alert("You cannot delete the CMB");
+          alert(this.RemoveCMBCaptionText);
         } else {
-          if (confirm("Are you sure?")) {
+          if (confirm(this.RemoveItemCaptionText)) {
             this.canvas.remove(activeObject);
+            this._totalAnnotations--;
           }
         }
       },
@@ -523,7 +531,7 @@ define([
           originY: "center",
           borderColor: "#fd5f00",
           cornerColor: "#fd5f00",
-          cornerSize: 20,
+          cornerSize: this.anchorSize,
           rotatingPointOffset: 80,
           transparentCorners: false,
           padding: 7
@@ -542,6 +550,7 @@ define([
 
         this.canvas.add(itext);
         this.canvas.moveTo(itext, 3);
+        this._totalAnnotations++;
       },
 
       _drawArrow: function() {
@@ -579,7 +588,7 @@ define([
           transparentCorners: false,
           borderColor: "#fd5f00",
           cornerColor: "#fd5f00",
-          cornerSize: 20,
+          cornerSize: this.anchorSize,
           rotatingPointOffset: 80,
           isArrow: true,
           padding: 15
@@ -601,6 +610,8 @@ define([
         this._drawInteractiveText();
         this.canvas.add(alltogetherObj);
         this.canvas.moveTo(alltogetherObj, 2);
+        //arrow count +1, text count is defined in drawInteractiveText
+        this._totalAnnotations++;
       },
 
       _cancel: function() {
@@ -612,14 +623,20 @@ define([
        *  - copy the association from the source image->parent to this new object
        */
       _saveToNewImage: function() {
-        this.saveButtonNode.setAttribute("disabled", null);
-        //this.saveButtonNode.innerText = "Saving..."
-        this._getNewImageObject()
-          .then(this._copyParentAssociationToNewObject.bind(this))
-          .then(this._saveCanvasContentsToImage.bind(this))
-          .then(this._executeCompletedMicroflow.bind(this));
-          
-          this.saveButtonNode.removeAttribute("disabled");
+        if(this._totalAnnotations<= 0 && this.annotationRequired)
+        {
+          alert(this.AnnotationText);
+        }
+        else{
+          this.saveButtonNode.setAttribute("disabled", "disabled");
+          this._showProgressBar();
+          //setTimeout('', 1000);
+          this._getNewImageObject()
+            .then(this._copyParentAssociationToNewObject.bind(this))
+            .then(this._saveCanvasContentsToImage.bind(this))
+            .then(this._executeCompletedMicroflow.bind(this))
+            .then(this._showProgressBar());
+        }
       },
 
       /**
@@ -775,7 +792,7 @@ define([
                 transparentCorners: false,
                 borderColor: "#fd5f00",
                 cornerColor: "#fd5f00",
-                cornerSize: 20,
+                cornerSize: this.anchorSize,
                 rotatingPointOffset: 80,
                 deletable: false,
                 isCMB: true,
@@ -828,7 +845,7 @@ define([
                       transparentCorners: false,
                       borderColor: "#fd5f00",
                       cornerColor: "#fd5f00",
-                      cornerSize: 20,
+                      cornerSize: this.anchorSize,
                       rotatingPointOffset: 80,
                       deletable: false,
                       isCMB: true,
@@ -928,7 +945,7 @@ define([
                 transparentCorners: false,
                 borderColor: "#fd5f00",
                 cornerColor: "#fd5f00",
-                cornerSize: 20,
+                cornerSize: this.anchorSize,
                 rotatingPointOffset: 80,
                 deletable: false,
                 isCMB: true,
@@ -944,6 +961,18 @@ define([
         }
       },
 
+      _showProgressBar: function() {
+        if(!this._progressBarDisplayed)
+        {
+          this._progressBarId = mx.ui.showProgress();
+          this._progressBarDisplayed = true;
+        }
+        else
+        {
+          mx.ui.hideProgress(this._progressBarId);
+          this._progressBarDisplayed = false;
+        }
+      },
       /**
        * execute the specified Microflow, if one exists
        */

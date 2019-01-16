@@ -53,6 +53,38 @@
  </translations>
 </property>
 
+<property key="RemoveCMBCaptionText" type="translatableString">
+ <caption>Deleting CMB Image?</caption>
+ <category>Translatable Text</category>
+ <description>Text caption displayed when trying to delete the CMB overlay.</description>
+ <translations>
+  <translation lang="en_US">You cannot remove the CMB!</translation>
+ </translations>
+</property>
+
+<property key="RemoveItemCaptionText" type="translatableString">
+ <caption>Removing an item?</caption>
+ <category>Translatable Text</category>
+ <description>Text caption displayed when trying to remove an item.</description>
+ <translations>
+  <translation lang="en_US">Are you sure?</translation>
+ </translations>
+</property>
+
+<property key="annotationRequired" type="boolean" defaultValue="false">
+ <caption>Annotation required?</caption>
+ <category>Translatable Text</category>
+ <description>Whether the widget is to verify for annotations.</description>
+</property>
+<property key="AnnotationText" type="translatableString">
+ <caption>Annotation Error Message</caption>
+ <category>Translatable Text</category>
+ <description>Text caption displayed when trying to save without a required annotation.</description>
+ <translations>
+  <translation lang="en_US">Please annotate image before saving.</translation>
+ </translations>
+</property>
+
 <property key="EnterTextMessage" type="translatableString">
  <caption>Enter Text (Default) Message</caption>
  <category>Translatable Text</category>
@@ -95,6 +127,7 @@
  <description>Whether the widget is to run offline.</description>
 </property>
 
+
         <property key="pathToParent" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="false">
           <caption>Path to Parent</caption>
           <category>General</category>
@@ -129,6 +162,11 @@
           <attributeTypes>
             <attributeType name="Enum" />
           </attributeTypes>
+        </property>
+        <property key="anchorSize" type="integer" required="true" defaultValue="20">
+          <caption>Anchor Size</caption>
+          <category>Appearance</category>
+          <description>The size of anchor points used for resizing and rotating the selected item.</description>
         </property>
         <property key="imageMapping" type="object" isList="true" required="false">
           <caption>Images</caption>
