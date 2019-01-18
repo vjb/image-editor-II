@@ -26,6 +26,15 @@
  </translations>
 </property>
 
+<property key="CloseText" type="translatableString">
+ <caption>Close Button Text</caption>
+ <category>Translatable Text</category>
+ <description>Text label of the Close Button</description>
+ <translations>
+  <translation lang="en_US">Close</translation>
+ </translations>
+</property>
+
 <property key="AddTextText" type="translatableString">
  <caption>Add Text Button Text</caption>
  <category>Translatable Text</category>

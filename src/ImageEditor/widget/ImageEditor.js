@@ -74,7 +74,6 @@ define([
       _handles: null,
       _contextObj: null,
       _totalAnnotations: null,
-      _progressBarDisplayed: null,
       _progressBarId: null,
 
       constructor: function() {
@@ -85,6 +84,7 @@ define([
         logger.debug(this.id + ".postCreate");
 
         this.canvas = new fabric.Canvas(this.canvasNode);
+        this.canvas.parent = this;
 
         // fabric.Image.fromURL('/img/MyFirstModule$_16_base_back.png', function (oImg) {
         //     this.canvas.add(oImg);
@@ -101,6 +101,7 @@ define([
         this.FontSizeTextNode.innerText = this.FontSizeText;
         this._totalAnnotations = 0;
         this._progressBarDisplayed = false;
+        this._isDirty(true);
         
       },
 
@@ -388,7 +389,8 @@ define([
                 this.renderAll();
             });
 */
-        this.canvas.on("object:selected", function() {
+        this.canvas.on("object:selected", function() {          
+        this.parent._isDirty(true);
           var activeObject = this.getActiveObject();
 
           if (activeObject.isCMB) {
@@ -426,26 +428,45 @@ define([
       },
 
       _increaseFont: function() {
+        this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
         if (activeObject.type === "i-text") {
           var currentFont = activeObject.fontSize;
-          if (currentFont + 2 < 120) {
-            activeObject.setFontSize(currentFont + 2);
+          if(fabric.version < "2.4.6") {
+            if (currentFont + 2 < 120) {
+              activeObject.setFontSize(currentFont + 2);
+            } else {
+              activeObject.setFontSize(120);
+            }
           } else {
-            activeObject.setFontSize(120);
+            if (currentFont + 2 < 120) {
+              activeObject.set("fontSize", currentFont + 2);
+            } else {
+              activeObject.set("fontSize", 120);
+            }
           }
         }
 
         this.canvas.renderAll();
       },
       _decreaseFont: function() {
+        
+        this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
         if (activeObject.type === "i-text") {
           var currentFont = activeObject.fontSize;
-          if (currentFont - 2 > 5) {
-            activeObject.setFontSize(currentFont - 2);
+          if(fabric.version < "2.4.6") {
+            if (currentFont - 2 > 5) {
+              activeObject.setFontSize(currentFont - 2);
+            } else {
+              activeObject.setFontSize(5);
+            }
           } else {
-            activeObject.setFontSize(5);
+            if (currentFont - 2 > 5) {
+              activeObject.set("fontSize", currentFont - 2);
+            } else {
+              activeObject.set("fontSize", 5);
+            }
           }
         }
 
@@ -453,6 +474,7 @@ define([
       },
 
       _makeSpecColor: function(event) {
+        this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
         var colorOptions = {
           red: "#ca261a",
@@ -508,6 +530,7 @@ define([
 */
 
       _deleteObject: function() {
+        this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
 
         if (activeObject.isCMB) {
@@ -521,6 +544,7 @@ define([
       },
 
       _drawInteractiveText: function() {
+        this._isDirty(true);
         var itext = new fabric.IText(this.EnterTextMessage, {
           left: this.canvas.getWidth() / 2,
           top: this.canvas.getHeight() / 3,
@@ -554,6 +578,7 @@ define([
       },
 
       _drawArrow: function() {
+        this._isDirty(true);
         var triangle = new fabric.Triangle({
           width: 40,
           height: 20,
@@ -615,6 +640,7 @@ define([
       },
 
       _cancel: function() {
+        this.cancelButtonNode.setAttribute("disabled", "disabled");
         this.mxform.close();
       },
       /**
@@ -628,15 +654,25 @@ define([
           alert(this.AnnotationText);
         }
         else{
+          this._isDirty(false);
+          var isModal = true;
           this.saveButtonNode.setAttribute("disabled", "disabled");
-          this._showProgressBar();
-          //setTimeout('', 1000);
-          this._getNewImageObject()
-            .then(this._copyParentAssociationToNewObject.bind(this))
-            .then(this._saveCanvasContentsToImage.bind(this))
-            .then(this._executeCompletedMicroflow.bind(this))
-            .then(this._showProgressBar());
+          this._progressBarId = mx.ui.showProgress("", isModal);
+          this._executeSaveActions(); 
+
+          if (this._progressBarId) {
+            mx.ui.hideProgress(this._progressBarId);
+            this.saveButtonNode.removeAttribute("disabled");
+          }           
         }
+      },
+
+      _executeSaveActions: function()
+      {
+        this._getNewImageObject()
+        .then(this._copyParentAssociationToNewObject.bind(this))
+        .then(this._saveCanvasContentsToImage.bind(this))
+        .then(this._executeCompletedMicroflow.bind(this));
       },
 
       /**
@@ -729,7 +765,14 @@ define([
       _saveCanvasContentsToImage: function(object) {
         return new Promise(
           lang.hitch(this, function(resolve, reject) {
-            this.canvas.deactivateAll().renderAll();
+            try
+            {
+              this.canvas.deactivateAll().renderAll();
+            }
+            catch(err)
+            {
+              this._deactivateAll();
+            }
             //msToBlob()
             //toBlob
             this.canvasNode.toBlob(
@@ -779,8 +822,8 @@ define([
             url,
             function(oImg) {
               oImg.set({
-                width: 150,
-                height: 150,
+                //width: 150,
+                //height: 150,
                 left: 100,
                 top: 100,
                 //originX: 'center',
@@ -832,8 +875,8 @@ define([
                   url,
                   function(oImg) {
                     oImg.set({
-                      width: 150,
-                      height: 150,
+                      //width: 150,
+                      //height: 150,
                       left: 100,
                       top: 100,
                       //originX: 'center',
@@ -932,8 +975,8 @@ define([
             url,
             function(oImg2) {
               oImg2.set({
-                width: 150,
-                height: 150,
+                //width: 150,
+                //height: 150,
                 left: 200,
                 top: 200,
                 //originX: 'center',
@@ -961,18 +1004,6 @@ define([
         }
       },
 
-      _showProgressBar: function() {
-        if(!this._progressBarDisplayed)
-        {
-          this._progressBarId = mx.ui.showProgress();
-          this._progressBarDisplayed = true;
-        }
-        else
-        {
-          mx.ui.hideProgress(this._progressBarId);
-          this._progressBarDisplayed = false;
-        }
-      },
       /**
        * execute the specified Microflow, if one exists
        */
@@ -1018,6 +1049,26 @@ define([
               }
             })
           );
+        }
+      },
+
+      _deactivateAll: function () {
+        var allObjects = this.canvas.getActiveObjects(),
+            i = 0,
+            len = allObjects.length;
+        for ( ; i < len; i++) {
+          allObjects[i].set('active', false);
+        }
+        this.canvas.discardActiveObject();
+        this.canvas.renderAll();
+        return this;
+      },
+
+      _isDirty: function(flag) {
+        if(flag) {
+          this.cancelButtonNode.innerText = this.CancelText;
+        }else{
+          this.cancelButtonNode.innerText = this.CloseText;
         }
       }
 
