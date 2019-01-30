@@ -61,14 +61,14 @@ define([
       //modeler variables
       canvasHeight: 500,
       canvasWidth: 900,
-      imAttribute: null,
       anchorSize: null,
       imageMapping: null, // {imKey: string, imImage: image}
       pathToParent: null,
       onUploadComplete: null,
       onUploadCompleteNano: null,
-      outgoingEntity: null,
       outgoingEntityAssociation: null,
+      incomingOverlayImage: null,
+      incomingSetOverlayImages: null,
 
       // Internal variables.
       _handles: null,
@@ -101,7 +101,7 @@ define([
         this.FontSizeTextNode.innerText = this.FontSizeText;
         this._totalAnnotations = 0;
         this._progressBarDisplayed = false;
-        this._isDirty(true);
+        //this._isDirty(true);
         
       },
 
@@ -111,26 +111,28 @@ define([
         this._contextObj = obj;
 
         if (this._contextObj) {
-          if (this.isOffline) {
+          this._drawDefaultImages();
+
+          /* if (this.isOffline) {
             console.log("going Offline");
             this._drawDefaultCMBOffline();
           }
           else{
         
-          this._drawDefaultCMB();
+            this._drawDefaultCMB();
 
-          try {
-            if (
-              this._contextObj.jsonData.attributes[
-                "DeliveryPlanning.CMBImages_CMBImageOverlay"
-              ].value.length > 1
-            ) {
-              this._drawDefaultCMB2();
+            try {
+              if (
+                this._contextObj.jsonData.attributes[
+                  "DeliveryPlanning.CMBImages_CMBImageOverlay"
+                ].value.length > 1
+              ) {
+                this._drawDefaultCMB2();
+              }
+            } catch (error) {
+              console.log("No 2nd CMB to site");
             }
-          } catch (error) {
-            console.log("No 2nd CMB to site");
-          }
-        }
+          } */
           
         }
 
@@ -390,7 +392,7 @@ define([
             });
 */
         this.canvas.on("object:selected", function() {          
-        this.parent._isDirty(true);
+        //this.parent._isDirty(true);
           var activeObject = this.getActiveObject();
 
           if (activeObject.isCMB) {
@@ -428,7 +430,7 @@ define([
       },
 
       _increaseFont: function() {
-        this._isDirty(true);
+        //this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
         if (activeObject.type === "i-text") {
           var currentFont = activeObject.fontSize;
@@ -451,7 +453,7 @@ define([
       },
       _decreaseFont: function() {
         
-        this._isDirty(true);
+        //this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
         if (activeObject.type === "i-text") {
           var currentFont = activeObject.fontSize;
@@ -474,7 +476,7 @@ define([
       },
 
       _makeSpecColor: function(event) {
-        this._isDirty(true);
+        //this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
         var colorOptions = {
           red: "#ca261a",
@@ -530,7 +532,7 @@ define([
 */
 
       _deleteObject: function() {
-        this._isDirty(true);
+        //this._isDirty(true);
         var activeObject = this.canvas.getActiveObject();
 
         if (activeObject.isCMB) {
@@ -544,7 +546,7 @@ define([
       },
 
       _drawInteractiveText: function() {
-        this._isDirty(true);
+        //this._isDirty(true);
         var itext = new fabric.IText(this.EnterTextMessage, {
           left: this.canvas.getWidth() / 2,
           top: this.canvas.getHeight() / 3,
@@ -578,7 +580,7 @@ define([
       },
 
       _drawArrow: function() {
-        this._isDirty(true);
+        //this._isDirty(true);
         var triangle = new fabric.Triangle({
           width: 40,
           height: 20,
@@ -654,15 +656,19 @@ define([
           alert(this.AnnotationText);
         }
         else{
-          this._isDirty(false);
+          //this._isDirty(false);
           var isModal = true;
           this.saveButtonNode.setAttribute("disabled", "disabled");
+          //this will add a custom class that can be set in the CSS of the widget or globally.
+          this.saveButtonNode.className += " " + "loading";
           this._progressBarId = mx.ui.showProgress("", isModal);
           this._executeSaveActions(); 
 
           if (this._progressBarId) {
             mx.ui.hideProgress(this._progressBarId);
             this.saveButtonNode.removeAttribute("disabled");
+            var regEx = new RegExp('\\b' + 'loading' + '\\b', 'g')
+            this.saveButtonNode.className = this.saveButtonNode.className.replace(regEx, "");
           }           
         }
       },
@@ -670,7 +676,6 @@ define([
       _executeSaveActions: function()
       {
         this._getNewImageObject()
-        .then(this._copyParentAssociationToNewObject.bind(this))
         .then(this._saveCanvasContentsToImage.bind(this))
         .then(this._executeCompletedMicroflow.bind(this));
       },
@@ -687,44 +692,34 @@ define([
       _getNewImageObject: function() {
         return new Promise(
           lang.hitch(this, function(resolve, reject) {
-            if(!this.isOffline)
-            {
-              // create a new object of this entity
-              mx.data.create({
-                entity: this._contextObj.getEntity(),
-                callback: lang.hitch(this, function(obj) {
-                  console.log("The object has been created");
-                  resolve(obj);
-                }),
-                error: function(e) {
-                  reject("there was an error creating this object");
-                }
-              });
-            }else
-            {// create a new object of this entity
-              var overlayEntity = this.outgoingEntity;
+            //retrieve overlay entity associated to contect object.
+            if(this.outgoingEntityAssociation){
+              var overlayEntity = this.outgoingEntityAssociation.split("/")[1];
               var overlayAssociation = this.outgoingEntityAssociation.split("/")[0];
-              var guidSiteImage = this._contextObj.getGuid();
+              var guidContext = this._contextObj.getGuid();
+              var guidObject = this._contextObj.jsonData.attributes[overlayAssociation].value;
 
-              mx.data.getOffline(overlayEntity, [{
-                attribute: overlayAssociation,
-                operator: "equals",
-                value: guidSiteImage // the guid of the owner, which is a Person entity
-              }], {}, function(mxobjs, count) {
-                console.log("There are " + count + " overlays for "+ guidSiteImage);
-                resolve(mxobjs[0]);
-              });
-
-              /* mx.data.get({
-                guid: guidCMBOverlay,
-                callback: lang.hitch(this, function(obj) {
-                  console.log("The object has been retrieved");
-                  resolve(obj);
-                }),
-                error: function(e) {
-                  reject("there was an error creating this object");
-                }
-              }); */
+              if(!this.isOffline){
+                  mx.data.get({
+                    guid: guidObject,
+                    callback: function(obj)
+                    {
+                      resolve(obj);
+                    }
+                  });
+              }else{
+                mx.data.getOffline(overlayEntity, [{
+                  attribute: overlayAssociation,
+                  operator: "equals",
+                  value: guidContext // the guid of the owner, which is a Person entity
+                }], {}, function(mxobjs, count) {
+                  console.log("There are " + count + " overlays for "+ guidContext);
+                  resolve(mxobjs[0]);
+                });
+              }
+            }else
+            {
+              resolve();
             }
           })
         );
@@ -802,6 +797,97 @@ define([
       },
 
       /**
+       * Gets all the images of associations that need to be added abobe the background layer.
+       * 
+       */
+
+      _drawDefaultImages: function()
+      {
+        try{
+          if(this.incomingOverlayImage)
+          {
+            var imgsAssociation = this.incomingOverlayImage.split("/")[0];
+            if (this._isArray(this._contextObj.jsonData.attributes[imgsAssociation]))
+            {
+              console.log("1 or more images to display");
+              var allObjects = this._contextObj.jsonData.attributes[imgsAssociation],
+              i = 0,
+              len = allObjects.length;
+              for ( ; i < len; i++) {
+                this._drawImage(allObjects[i]);
+              }
+
+            }else{
+              
+            console.log("1 image to display");
+              this._drawImage(this._contextObj.jsonData.attributes[imgsAssociation].value);
+            }
+          }
+
+          if(this.incomingSetOverlayImages)
+          {
+            var imgsAssociation = this.incomingSetOverlayImages.split("/")[0];
+            if (this._isArray(this._contextObj.jsonData.attributes[imgsAssociation]))
+            {
+              console.log("1 or more images to display");
+              var allObjects = this._contextObj.jsonData.attributes[imgsAssociation],
+              i = 0,
+              len = allObjects.length;
+              for ( ; i < len; i++) {
+                this._drawImage(allObjects[i]);
+              }
+
+            }else{
+              
+            console.log("1 image to display");
+              this._drawImage(this._contextObj.jsonData.attributes[imgsAssociation].value);
+            }
+          }
+
+          
+        } catch (err) {
+          console.log("no images to display");
+        }
+      },
+
+      /**
+       * Draw image on canvas.
+       */
+      _drawImage: function(imgGuid)
+      {
+        var url = mx.data.getDocumentUrl(imgGuid);
+
+        fabric.Image.fromURL(
+          url,
+          function(oImg) {
+            oImg.set({
+              //width: 150,
+              //height: 150,
+              left: 100,
+              top: 100,
+              //originX: 'center',
+              //originY: 'center',
+              centeredScaling: true,
+              hasControls: true,
+              lockUniScaling: true,
+              lockScalingFlip: true,
+              transparentCorners: false,
+              borderColor: "#fd5f00",
+              cornerColor: "#fd5f00",
+              cornerSize: this.anchorSize,
+              rotatingPointOffset: 80,
+              deletable: false,
+              isCMB: true,
+              padding: 7
+            });
+
+            this.canvas.add(oImg);
+            this.canvas.moveTo(oImg, 0);
+          }.bind(this)
+        );
+      },
+
+      /**
        * Look at the context object, and draw the right image (based on the mapping in this.imageMapping)
        */
       _drawDefaultCMB: function() {
@@ -822,7 +908,7 @@ define([
             url,
             function(oImg) {
               oImg.set({
-                //width: 150,
+                //width: 150, 
                 //height: 150,
                 left: 100,
                 top: 100,
@@ -853,22 +939,12 @@ define([
 
       _drawDefaultCMBOffline: function() {
         try {
-          /*
-          var overlays = this._contextObj.jsonData.attributes[
-            "DeliveryPlanning.CMBImages_CMBImageOverlay"
-          ];
-          var num_overlays = overlays.value.length;
-          //var url=mx.data.getDocumentUrl(this._contextObj.jsonData.attributes["DeliveryPlanning.CMBImages_CMBImageOverlay"].value[0]);
-*/
-          console.log("before");
-
-          var guidCMBImg = this._contextObj.jsonData.attributes["DeliveryPlanning.SiteImage_CMBImages"].value;
-
+          var objectAssociation = this.incomingImageObjectEntityAssociation.split("/")[0];
+          var guidCMBImg = this._contextObj.jsonData.attributes[objectAssociation].value;
+          
           mx.data.get({
             guid: guidCMBImg,
             callback: function(obj) {
-                console.log("Got image back " + obj.getGuid());
-
                 var url = mx.data.getDocumentUrl(obj.getGuid());
 
                 fabric.Image.fromURL(
@@ -900,58 +976,7 @@ define([
                   }.bind(this)
                 );
             }.bind(this)
-        });
-
-          /* mx.data.getOffline(
-            "DeliveryPlanning.CMBImages",
-            [
-              {
-                attribute: "DeliveryPlanning.SiteImage_CMBImages",
-                operator: "equals",
-                value: guid // the guid of the owner, which is a SiteImage entity
-              }
-            ],
-            {},
-            function(mxobjs, count) {
-              console.log(guid);
-              console.log("There are " + count + " CMBImages offline");
-
-              var url = mx.data.getDocumentUrl(mxobjs[0].getGuid());
-
-              console.log(url);
-
-              fabric.Image.fromURL(
-                url,
-                function(oImg) {
-                  oImg.set({
-                    width: 150,
-                    height: 150,
-                    left: 100,
-                    top: 100,
-                    //originX: 'center',
-                    //originY: 'center',
-                    centeredScaling: true,
-                    hasControls: true,
-                    lockUniScaling: true,
-                    lockScalingFlip: true,
-                    transparentCorners: false,
-                    borderColor: "#fd5f00",
-                    cornerColor: "#fd5f00",
-                    cornerSize: 20,
-                    rotatingPointOffset: 80,
-                    deletable: false,
-                    isCMB: true,
-                    padding: 7
-                  });
-
-                  this.canvas.add(oImg);
-                  this.canvas.moveTo(oImg, 0);
-                }.bind(this)
-              );
-            }.bind(this)
-          ); */
-
-          console.log("after");
+          });
         } catch (err) {
           console.log("mobile CMB error");
         }
@@ -1017,7 +1042,7 @@ define([
                   params: {
                     actionname: this.onUploadComplete,
                     applyto: "selection",
-                    guids: [guid]
+                    guids: [this._contextObj.getGuid()]
                   },
                   origin: this.mxform,
                   callback: resolve,
@@ -1070,6 +1095,10 @@ define([
         }else{
           this.cancelButtonNode.innerText = this.CloseText;
         }
+      },
+
+      _isArray: function(o) {
+        return Object.prototype.toString.call(o) === '[object Array]';
       }
 
     }

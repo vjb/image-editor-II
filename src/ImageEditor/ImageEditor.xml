@@ -154,15 +154,20 @@
           <description>The nanoflow to be called when the upload finishes. Will receive the new object (of the same entity as the current context) as a parameter</description>
           <returnType type="Void" />
         </property>
-        <property key="outgoingEntity" type="entity" isPath="optional" allowNonPersistableEntities="false" pathType="reference" required="false">
-            <caption>Outgoing Entity</caption>
-          <category>General</category>
-          <description>The type of object returned from the widget. If not set, it will be the same type as context. Should be set if Offline is set to true.</description>
-        </property>
-        <property key="outgoingEntityAssociation" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="false">
+        <property key="outgoingEntityAssociation" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="true">
             <caption>Outgoing Entity Assocation</caption>
           <category>General</category>
           <description>The association between the context object and the object returned from the widget. Should be set if Offline is set to true.</description>
+        </property>
+        <property key="incomingOverlayImage" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="reference" required="false">
+            <caption>Incoming Image</caption>
+          <category>General</category>
+          <description>The association between the context object (background image) and the image displayed in above layer.</description>
+        </property>
+        <property key="incomingSetOverlayImages" type="entity" isPath="yes" allowNonPersistableEntities="false" pathType="referenceSet" required="false">
+            <caption>Incoming Set of Images</caption>
+          <category>General</category>
+          <description>The association between the context object (background image) and the set of images displayed in above layers.</description>
         </property>
         <property key="imAttribute" type="attribute" required="false">
           <caption>Attribute</caption>
