@@ -697,7 +697,7 @@ define([
               var overlayEntity = this.outgoingEntityAssociation.split("/")[1];
               var overlayAssociation = this.outgoingEntityAssociation.split("/")[0];
               var guidContext = this._contextObj.getGuid();
-              var guidObject = this._contextObj.jsonData.attributes[overlayAssociation].value;
+              var guidObject = this._contextObj.getReference(overlayAssociation);
 
               if(!this.isOffline){
                   mx.data.get({
